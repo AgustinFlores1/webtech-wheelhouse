@@ -35,3 +35,35 @@
 10. As a counter clerk, i want to be able to reassing an existing bike to another customer's contact details, **so that** a bike keeps its full history with its second-hand owner
 
 11. As a bussiness owner, i want to update the service priceses list at any time while keeping past invoices unchanged, **so that** i can charge different prices for the repairs without the prices from past repairs changing to automatically
+
+
+
+# Acceptance Criteria
+
+### Story 2
+"As a mechanic, i want to log what problems i found with the bike and an estimated price for repair after inspection, **so that** staff have complete price justification ready when presenting the quote to the customer"
+
+* There is a notes box where the user can write multiline paragraphs and bulleted lists
+* The system only allows the update when both the notes and the estimated price are filled out
+* When successfully logging the information, all it is visible for the counter clerk
+
+### Story 3
+"As a shop worker, i want to select the repair services from a predefined price list that a bike needs, **so that** we can quickly get the total price for a full repair of the bike without checking the physical list."
+
+* The screen dsiplays a full list of all the repair services and their respective price
+* Checking a an item in the list automatically updates the total price of the job
+* Uncheking an item updates and reduces the  total price of the job
+
+### Story 9
+"As a shop worker, i want to be able to see a bikes history of repairs, so that we know if we have worked on a bike or not and notify the a new or returning customer of it"
+
+* Searching a bikes serial number displays a list of prior and/current repairs of said bike
+* All history tabs have the dates and services performed at the time
+* Clicking a any past repair displays a detailed view of the repair
+
+### Story 11
+"As a bussiness owner, i want to update the service priceses list at any time while keeping past invoices unchanged, **so that** i can charge different prices for the repairs without the prices from past repairs changing to automatically"
+
+* Any item in the list can be updated separately
+* Items can be added or removed to the list 
+* When the list is updated, the total price of past repairs on the bikes doesnt change
