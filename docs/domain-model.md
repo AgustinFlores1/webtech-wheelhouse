@@ -1,6 +1,6 @@
 # Domain Model
 
-![Domain Model Diagram](./domainModel.png)
+![Domain Model Diagram](./images/domainModel.png)
 
 ## Code
 
