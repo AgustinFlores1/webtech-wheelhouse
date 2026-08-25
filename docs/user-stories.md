@@ -50,7 +50,7 @@
 ### Story 3
 "As a shop worker, i want to select the repair services from a predefined price list that a bike needs, **so that** we can quickly get the total price for a full repair of the bike without checking the physical list."
 
-* The screen dsiplays a full list of all the repair services and their respective price
+* The screen displays a full list of all the repair services and their respective price
 * Checking a an item in the list automatically updates the total price of the job
 * Uncheking an item updates and reduces the  total price of the job
 
@@ -58,7 +58,7 @@
 "As a shop worker, i want to be able to see a bikes history of repairs, so that we know if we have worked on a bike or not and notify the a new or returning customer of it"
 
 * Searching a bikes serial number displays a list of prior and/current repairs of said bike
-* All history tabs have the dates and services performed at the time
+* All history tabs have the dates and services performed to the bike at te moment of repair
 * Clicking a any past repair displays a detailed view of the repair
 
 ### Story 11
