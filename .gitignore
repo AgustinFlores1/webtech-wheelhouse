@@ -1,0 +1,10 @@
+node_modules/
+app/assets/builds/
+config/master.key
+config/credentials/*.key
+log/*
+tmp/*
+storage/*
+.vscode/
+.DS_Store
+.env*
