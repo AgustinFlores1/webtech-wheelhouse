@@ -1,0 +1,13 @@
+<h1>Visit the Workshop</h1>
+<p class="lead text-end fw-bold">Drop off your bike during shop hours.</p>
+
+<section class="workshop-info mb-4 border p-4 rounded-5 border-primary border-3 text-start">
+    <h2 class="mb-2">Shop Hours:</h2>
+    <ul class="list-unstyled mb-4">
+        <li class="py-1"> > <strong>Weekdays:</strong> <%= @hours[:weekdays] %></li>
+        <li class="py-1"> > <strong>Weekends:</strong> <%= @hours[:weekends] %></li>
+    </ul>
+
+    <h2 class="mb-2 border-top border-primary pt-2">Location:</h2>
+    <p class="m-0 fs-5"> > "<%= @location %>"</p>
+</section>

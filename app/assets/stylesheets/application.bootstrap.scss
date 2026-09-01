@@ -4,3 +4,13 @@ $body-color: #f8f9fa;
 
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+.table-dark-yellow {
+  --bs-table-bg: #cc9900;       // Darker yellow tint
+  --bs-table-color: #000000;    // Black text for high readability
+}
+
+.table-bone-white {
+  --bs-table-bg: #f6f4f0;       // Off-white / Bone color
+  --bs-table-color: #212529;    
+}

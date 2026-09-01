@@ -1,0 +1,17 @@
+<h1>About Wheelhouse</h1>
+<p class="lead text-end fw-bold">Meet the team behind the wrenches.</p>
+
+<section class="about-info mb-4 border p-3 rounded-5 border-primary border-3 text-center">
+    <h2 class="border-bottom border-primary pb-3">Our Team</h2>
+    <ul class="list-unstyled mb-4 text-start">
+        <% @members.each do |member| %>
+            <li class="py-1 fs-5">
+                <span class="fw-bold text-primary"><%= member[:name] %></span> - <%= member[:role] %>
+            </li>
+        <% end %>
+    </ul>
+
+    <div class="border-top border-primary pt-3">
+        <p class="m-0 fs-5">Contact us at <strong class="text-primary"><%= @contact_number %></strong></p>
+    </div>
+</section>

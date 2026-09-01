@@ -24,6 +24,25 @@
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar navbar-expand-md bg-primary mb-4" data-bs-theme="light">
+      <div class="container">
+        <%= link_to "WHEELHOUSE BIKES", root_path, class: "navbar-brand" %>
+
+        <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto text-center">
+            <li class="nav-item"><%= link_to 'Home', root_path, class: "nav-link #{'active' if current_page?(root_path)}" %></li>
+            <li class="nav-item"><%= link_to 'Services', services_path, class: "nav-link #{'active' if current_page?(services_path)}" %></li>
+            <li class="nav-item"><%= link_to 'Workshop', workshop_path, class: "nav-link #{'active' if current_page?(workshop_path)}" %></li>
+            <li class="nav-item"><%= link_to 'About', about_path, class: "nav-link #{'active' if current_page?(about_path)}" %></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main class="container">
+      <%= yield %>
+    </main>
   </body>
 </html>

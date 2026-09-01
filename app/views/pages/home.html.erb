@@ -1,0 +1,18 @@
+
+
+<h1>Welcome to Wheelhouse Bikes</h1>
+<p class="lead text-end fw-bold">Your local community bike shop.</p>
+
+<section class="home-info mb-4 border p-3 rounded-5 border-primary border-3 text-center">
+    <h2 class="mb-4 border-bottom border-primary pb-3">About Us</h2>
+  <p><%= @message %></p>
+</section>
+
+<section class="other-pages">
+    <h2 class="mb-4">Explore The Shop</h2>
+        <article class="row g-2">
+            <div class="col-12 col-md-4"><%= link_to 'Services', services_path, class: 'btn btn-primary w-100' %></div>
+            <div class="col-12 col-md-4"><%= link_to 'Workshop', workshop_path, class: 'btn btn-primary w-100' %></div>
+            <div class="col-12 col-md-4"><%= link_to 'About', about_path, class: 'btn btn-primary w-100' %></div>
+        </article>
+</section>

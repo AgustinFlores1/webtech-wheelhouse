@@ -1,0 +1,25 @@
+
+
+<h1>Our Services</h1>
+<p class="lead text-end fw-bold">Transparent pricing for every repair.</p> 
+
+<section class="services-info">
+    <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm">
+        <table class="table table-hover m-0">
+            <thead>
+                <tr class="table-bone-white border-bottom border-2 border-secondary">
+                    <th scope="col" class="text-start fw-bold border-end border-secondary">Service</th>
+                    <th scope="col" class="text-end fw-bold text-dark">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @repair_prices.each do |service, price| %>
+                    <tr class="table-dark-yellow">
+                        <td class="text-start py-2 fw-bold pt-2 border-end border-secondary"><%= service %></td>
+                        <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= price %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm">
+</section>
