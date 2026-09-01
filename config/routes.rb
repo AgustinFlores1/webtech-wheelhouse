@@ -13,5 +13,4 @@ Rails.application.routes.draw do
   get "services", to: "pages#services", as: :services
   get "workshop", to: "pages#workshop", as: :workshop
   get "about", to: "pages#about", as: :about
-  
 end
