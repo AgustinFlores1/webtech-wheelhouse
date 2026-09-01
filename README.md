@@ -3,6 +3,7 @@
 **Wheelhouse** is a web application for a local community bicycle repair shop. It follows a Ruby-on-Rails arquitecture styled with Bootstrap.
 
 ## Documentation
+
 The projects documentation is located in the `docs/` folder
 
 * [User Stories](docs/user-stories.md)
@@ -22,7 +23,7 @@ Too be able to run this aplication locally in your own system you will need the 
 
 ## Prerequisites Installation Guides
 
-For the installation it is recommended you use version managers for Ruby and Node.js, such us 
+For the installation it is recommended you use version managers for Ruby and Node.js, such us
 [Mise](https://mise.jdx.dev) (All purpose), [Rbenv](https://github.com/rbenv/rbenv) and/or [Nodenv](https://github.com/nodenv/nodenv).
 
 * [Ruby on Rails — Install Rails](https://guides.rubyonrails.org/install_ruby_on_rails.html) , Which covers the installation for Ruby, Rails and Node for every operating system
@@ -45,7 +46,6 @@ sudo npm install --global yarn
 ```
 
 ### Windows
-
 
 For Windows Operating Systems is recommended to have [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/) (WSL) installed and running.
 
