@@ -7,6 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
 Customer.delete_all
 
 customers_data = [
@@ -65,7 +66,6 @@ staff_data = [
 ]
 
 staff = staff_data.map { |attrs| StaffMember.create!(attrs) }
-staff_by_name = staff.index_by(&:name)
 
 Bike.delete_all
 

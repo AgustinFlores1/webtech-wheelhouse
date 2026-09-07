@@ -6,20 +6,7 @@ class PagesController < ApplicationController
   end
 
   def services
-    @repair_prices = {
-      "Flat Tire Repair" => "$20",
-      "Brake Adjustment" => "$30",
-      "Chain Replacement" => "$25",
-      "Gear Adjustment" => "$30",
-      "Wheel Truing" => "$40",
-      "Hydraulic Brake Bleed" => "$50",
-      "Full Tune-Up" => "$100",
-      "Bottom Bracket Service" => "$45",
-      "Drivetrain Cleaning" => "$35",
-      "Spoke Replacement" => "$15",
-      "Headset Adjustment" => "$25",
-      "Cable & Housing Install" => "$30"
-    }
+    @services = ServiceCatalog.where(is_active: true).order(:name)
   end
 
   def workshop

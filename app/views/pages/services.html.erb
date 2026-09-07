@@ -13,10 +13,10 @@
                 </tr>
             </thead>
             <tbody>
-                <% @repair_prices.each do |service, price| %>
+                <% @services.each do |service| %>
                     <tr class="table-dark-yellow">
-                        <td class="text-start py-2 fw-bold pt-2 border-end border-secondary"><%= service %></td>
-                        <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= price %></td>
+                        <td class="text-start py-2 fw-bold pt-2 border-end border-secondary"><%= service.name %></td>
+                        <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= number_to_currency(service.current_price) %></td>
                     </tr>
                 <% end %>
             </tbody>
