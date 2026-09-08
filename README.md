@@ -20,6 +20,7 @@ Too be able to run this aplication locally in your own system you will need the 
 * [Rails 8.0.x](https://rubyonrails.org/docs)
 * [Node 26.1.x](https://nodejs.org/en)
 * [Yarn 1.22.x](https://yarnpkg.com)
+* [PostgreSQL 16.x](https://www.postgresql.org/docs/current/) — running locally, with a role that can create databases
 
 ## Prerequisites Installation Guides
 
@@ -77,6 +78,21 @@ yarn install
 
 ```bash
 rails css:build
+```
+
+### Set up the database
+
+The application connects to PostgreSQL using a role matching your operating system username. Create
+it if it doesn't already exist:
+
+```bash
+sudo -u postgres createuser -d $(whoami)
+```
+
+Then create, load, and seed the database in one step:
+
+```bash
+bin/rails db:setup
 ```
 
 ## Running the Aplication Locally
