@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_203613) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_165704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,4 +73,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_203613) do
     t.string "role", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "bikes", "customers"
+  add_foreign_key "repair_services", "repairs"
+  add_foreign_key "repair_services", "service_catalogs"
+  add_foreign_key "repairs", "bikes"
+  add_foreign_key "repairs", "customers"
+  add_foreign_key "repairs", "staff_members", column: "assigned_mechanic_id"
 end
