@@ -13,4 +13,10 @@ Rails.application.routes.draw do
   get "services", to: "pages#services", as: :services
   get "workshop", to: "pages#workshop", as: :workshop
   get "about", to: "pages#about", as: :about
+
+  resources :customers, only: [ :index, :show ]
+  resources :bikes, only: [ :index, :show ]
+  resources :staff_members, only: [ :index, :show ]
+  resources :repairs, only: [ :index, :show ]
+  resources :service_catalogs, path: "services", only: [ :index, :show ]
 end
