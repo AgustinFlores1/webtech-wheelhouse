@@ -1,0 +1,11 @@
+<% content_for(:title, @service_catalog.name) %>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h1 class="card-title"><%= @service_catalog.name %></h1>
+    <p class="card-text"><strong>Price:</strong> <%= number_to_currency(@service_catalog.current_price) %></p>
+    <p class="card-text"><strong>Active:</strong> <%= @service_catalog.is_active ? "Active" : "Inactive" %>
+  </div>
+</div>
+
+<%= link_to "Back to Services", service_catalogs_path %>

@@ -1,0 +1,22 @@
+<h1>Customers</h1>
+
+<% if @customers_list.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @customers_list.each do |customer| %>
+        <tr>
+          <td><%= link_to customer.name, customer_path(customer) %></td>
+          <td><%= customer.phone %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No customers yet.</p>
+<% end %>

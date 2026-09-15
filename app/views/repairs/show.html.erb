@@ -1,0 +1,60 @@
+<% content_for(:title, "Repair N°#{@repair.id}") %>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h1 class="card-title">Repair #<%= @repair.id %></h1>
+
+    <p class="card-text"><strong>Status:</strong> <%= @repair.status %></p>
+    <p class="card-text"><strong>Reported Issue:</strong> <%= @repair.reported_issue %></p>
+    <p class="card-text"><strong>Promised Return:</strong> <%= @repair.promised_return_on%></p>
+    <p class="card-text">
+      <strong>Return date:</strong>
+      <%= @repair.closed_at.nil? ? "Not yet returned" : @repair.closed_at.strftime("%B %d, %Y at %I:%M %p") %>
+    </p>
+
+    <p class="card-text">
+      <strong>Bike:</strong>
+      <%= link_to @repair.bike.serial_number, bike_path(@repair.bike) %>
+    </p>
+    <p class="card-text">
+      <strong>Brought in by:</strong>
+      <%= link_to @repair.customer.name, customer_path(@repair.customer) %>
+    </p>
+    <p class="card-text">
+      <strong>Mechanic:</strong>
+      <% if @repair.assigned_mechanic.present? %>
+        <%= link_to @repair.assigned_mechanic.name, staff_member_path(@repair.assigned_mechanic) %>
+      <% else %>
+        Unassigned
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<h2>Services Charged</h2>
+
+<% if @repair.repair_services.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Price Charged</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @repair.repair_services.each do |line| %>
+        <tr>
+          <td><%= line.service_catalog.name %></td>
+          <td><%= number_to_currency(line.agreed_price) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <p><strong>Total:</strong> <%= number_to_currency(
+    @repair.repair_services.sum { |item| item.agreed_price }
+  ) %></p>
+<% else %>
+  <p>No services appear on this repair</p>
+<% end %>
+
+<%= link_to "Back to Repairs", repairs_path %>

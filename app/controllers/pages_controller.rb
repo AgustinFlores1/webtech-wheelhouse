@@ -5,10 +5,6 @@ class PagesController < ApplicationController
     casual rider or a seasoned cyclist, we have something for everyone."
   end
 
-  def services
-    @services = ServiceCatalog.where(is_active: true).order(:name)
-  end
-
   def workshop
     @hours = {
       weekdays: "9 AM - 5 PM",

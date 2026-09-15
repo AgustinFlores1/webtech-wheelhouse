@@ -1,0 +1,24 @@
+<h1>Repairs</h1>
+
+<% if @repairs_list.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Bike</th>
+        <th>Customer</th>
+        <th>Mechanic</th>
+        <th>Returned</th>
+        <th>Status</th>
+        <th>Promised Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @repairs_list.each do |repair| %>
+        <%= render "repairs/repair", repair: repair %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no repairs in the system</p>
+<% end %>

@@ -1,0 +1,9 @@
+<tr class="<%= "table-danger" if repair.promised_return_on < Date.current && repair.closed_at.nil?%>">
+  <td><%= link_to repair.bike.serial_number, bike_path(repair.bike) %></td>
+  <td><%= link_to repair.customer.name, customer_path(repair.customer) %></td>
+  <td><%= repair.assigned_mechanic.nil? ? "Unassigned" : repair.assigned_mechanic.name %></td>
+  <td><%= repair.closed_at.nil? ? "Not yet returned" : repair.closed_at.strftime("%B %d, %Y at %I:%M %p") %></td>
+  <td><%= repair.status %></td>
+  <td><%= repair.promised_return_on%></td>
+  <td><%= link_to "Detailed View", repair_path(repair)%></td>
+</tr>

@@ -1,0 +1,40 @@
+<% content_for(:title, "#{@bike.make_model} - #{@bike.serial_number}") %>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h1 class="card-title"><%= @bike.serial_number %></h1>
+    <p class="card-text"><strong>Make/Model:</strong> <%= @bike.make_model %></p>
+    <p class="card-text"><strong>Colour:</strong> <%= @bike.colour %></p>
+    <p class="card-text">
+      <strong>Owner:</strong>
+      <%= link_to @bike.customer.name, customer_path(@bike.customer) %>
+    </p>
+  </div>
+</div>
+
+<h2>Repair History</h2>
+
+<% if @bike.repairs.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Bike</th>
+        <th>Customer</th>
+        <th>Mechanic</th>
+        <th>Returned</th>
+        <th>Status</th>
+        <th>Promised Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @bike.repairs.each do |repair| %>
+        <%= render "repairs/repair", repair: repair %>
+        <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This bike has not been worked on here</p>
+<% end %>
+
+<%= link_to "Back to Bikes", bikes_path %>

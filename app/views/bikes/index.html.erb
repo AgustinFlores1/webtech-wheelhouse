@@ -1,0 +1,21 @@
+<h1>Bikes</h1>
+
+<% if @bikes_list.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Serial Number</th>
+        <th>Make Model</th>
+        <th>Colour</th>
+        <th>Owner</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% @bikes_list.each do |bike| %>
+            <%= render "bike", bike: bike %>
+        <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No bikes in the system.</p>
+<% end %>

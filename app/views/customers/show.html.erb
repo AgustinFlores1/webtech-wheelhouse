@@ -1,0 +1,34 @@
+<% content_for(:title, @customer.name) %>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h1 class="card-title"><%= @customer.name %></h1>
+    <p class="card-text">
+      <strong>Phone:</strong> <%= @customer.phone %>
+    </p>
+  </div>
+</div>
+
+<h2>Bikes Owned</h2>
+
+<% if @customer.bikes.any?%>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Serial Number</th>
+        <th>Make Model</th>
+        <th>Colour</th>
+        <th>Owner</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @customer.bikes.each do |bike| %>
+        <%= render "bikes/bike", bike: bike %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This customer doesnt own any bikes</p>
+<% end %>
+
+<%= link_to "Back to Customers", customers_path%>

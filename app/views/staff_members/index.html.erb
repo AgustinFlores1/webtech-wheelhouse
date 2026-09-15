@@ -1,0 +1,22 @@
+<h1>Staff</h1>
+
+<% if @staff_members_list.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @staff_members_list.each do |staff_member| %>
+        <tr>
+          <td><%= link_to staff_member.name, staff_member_path(staff_member) %></td>
+          <td><%= staff_member.role %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There appears to be now staff in the system</p>
+<% end %>

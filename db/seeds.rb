@@ -8,6 +8,11 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+RepairService.delete_all
+ServiceCatalog.delete_all
+Repair.delete_all
+StaffMember.delete_all
+Bike.delete_all
 Customer.delete_all
 
 customers_data = [
@@ -24,8 +29,6 @@ customers_data = [
 ]
 customers = customers_data.map { |attrs| Customer.create!(attrs) }
 customer_by_name = customers.index_by(&:name)
-
-ServiceCatalog.delete_all
 
 services_data = [
   { name: "Flat Tire Repair",         current_price: 20 },
@@ -55,8 +58,6 @@ services_data = [
 services = services_data.map { |attrs| ServiceCatalog.create!(attrs) }
 services_by_name = services.index_by(&:name)
 
-StaffMember.delete_all
-
 staff_data = [
   { name: "Jeremy Falls",     role: "shop_owner" },
   { name: "Samantha Winters", role: "counter_clerk" },
@@ -66,8 +67,6 @@ staff_data = [
 ]
 
 staff = staff_data.map { |attrs| StaffMember.create!(attrs) }
-
-Bike.delete_all
 
 bikes_data = [
   { serial_number: "TRK-8827-A", make_model: "Trek Marlin 5",         colour: "Blue",   owner: "Scott Cawthon" },
@@ -94,8 +93,6 @@ bikes = bikes_data.map do |b|
 end
 
 bikes_by_serial = bikes.index_by(&:serial_number)
-
-Repair.delete_all
 
 mechanics = staff.select { |s| s.role == "mechanic" }
 carlos, roberto, alkahul = mechanics[0], mechanics[1], mechanics[2]
@@ -191,8 +188,6 @@ repairs = repairs_data.map do |r|
     closed_at: r[:closed_at]
   )
 end
-
-RepairService.delete_all
 
 repair_services_data = [
   # All the ones that are arrived, pending aproval or denied dont have the agreed price and are not being repaired
