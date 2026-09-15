@@ -1,22 +1,26 @@
 <h1>Customers</h1>
 
 <% if @customers_list.any? %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Phone</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @customers_list.each do |customer| %>
-        <tr>
-          <td><%= link_to customer.name, customer_path(customer) %></td>
-          <td><%= customer.phone %></td>
+  <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm">
+    <table class="table table-hover m-0">
+      <thead>
+        <tr class="table-header-yellow border-bottom border-2 border-secondary">
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Name</th>
+          <th scope="col" class="text-end fw-bold">Phone</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @customers_list.each do |customer| %>
+          <tr class="table-row-dark">
+            <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
+              <%= link_to customer.name, customer_path(customer) %>
+            </td>
+            <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= customer.phone %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% else %>
   <p>No customers yet.</p>
 <% end %>

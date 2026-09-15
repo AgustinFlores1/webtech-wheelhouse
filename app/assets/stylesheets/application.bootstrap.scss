@@ -5,12 +5,17 @@ $body-color: #f8f9fa;
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
 
-.table-dark-yellow {
-  --bs-table-bg: #cc9900;       // Darker yellow tint
-  --bs-table-color: #000000;    // Black text for high readability
+.table-header-yellow {
+  --bs-table-bg: #ffc107;
+  --bs-table-color: #000000;
 }
 
-.table-bone-white {
-  --bs-table-bg: #f6f4f0;       // Off-white / Bone color
-  --bs-table-color: #212529;    
+.table-row-dark {
+  --bs-table-bg: #212529;
+  --bs-table-color: #f8f9fa;
+}
+
+.table-overdue {
+  --bs-table-bg: #7a0f1a;
+  --bs-table-color: #f8f9fa;
 }

@@ -1,22 +1,26 @@
 <h1>Staff</h1>
 
 <% if @staff_members_list.any? %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Role</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @staff_members_list.each do |staff_member| %>
-        <tr>
-          <td><%= link_to staff_member.name, staff_member_path(staff_member) %></td>
-          <td><%= staff_member.role %></td>
+  <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm">
+    <table class="table table-hover m-0">
+      <thead>
+        <tr class="table-header-yellow border-bottom border-2 border-secondary">
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Name</th>
+          <th scope="col" class="text-end fw-bold">Role</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @staff_members_list.each do |staff_member| %>
+          <tr class="table-row-dark">
+            <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
+              <%= link_to staff_member.name, staff_member_path(staff_member) %>
+            </td>
+            <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= staff_member.role %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% else %>
-  <p>There appears to be now staff in the system</p>
+  <p>There appears to be no staff in the system</p>
 <% end %>

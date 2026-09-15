@@ -1,24 +1,26 @@
 <h1>Repairs</h1>
 
 <% if @repairs_list.any? %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Bike</th>
-        <th>Customer</th>
-        <th>Mechanic</th>
-        <th>Returned</th>
-        <th>Status</th>
-        <th>Promised Date</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @repairs_list.each do |repair| %>
-        <%= render "repairs/repair", repair: repair %>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm">
+    <table class="table table-hover m-0">
+      <thead>
+        <tr class="table-header-yellow border-bottom border-2 border-secondary">
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Bike</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Customer</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Mechanic</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Returned</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Status</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Promised Date</th>
+          <th scope="col" class="text-end fw-bold"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @repairs_list.each do |repair| %>
+          <%= render "repairs/repair", repair: repair %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% else %>
   <p>There are no repairs in the system</p>
 <% end %>

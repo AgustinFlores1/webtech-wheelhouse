@@ -6,18 +6,18 @@
     <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm">
       <table class="table table-hover m-0">
         <thead>
-          <tr class="table-bone-white border-bottom border-2 border-secondary">
+          <tr class="table-header-yellow border-bottom border-2 border-secondary">
             <th scope="col" class="text-start fw-bold border-end border-secondary">Service</th>
-            <th scope="col" class="text-end fw-bold text-dark">Price</th>
+            <th scope="col" class="text-end fw-bold border-secondary">Price</th>
           </tr>
         </thead>
         <tbody>
           <% @service_catalogs_list.each do |service| %>
-            <tr class="table-dark-yellow">
-              <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
+            <tr class="table-row-dark">
+                <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
                 <%= link_to service.name, service_catalog_path(service) %>
-              </td>
-              <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= number_to_currency(service.current_price) %></td>
+                </td>
+                <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= number_to_currency(service.current_price) %></td>
             </tr>
           <% end %>
         </tbody>
