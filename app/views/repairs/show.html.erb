@@ -1,60 +1,54 @@
 <% content_for(:title, "Repair N°#{@repair.id}") %>
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h1 class="card-title">Repair #<%= @repair.id %></h1>
+<section class="customer-info mb-4 border p-3 rounded-5 border-primary border-3 text-start">
+    <h1 class="mb-3 border-bottom border-primary pb-3">Repair #<%= @repair.id %></h1>
 
-    <p class="card-text"><strong>Status:</strong> <%= @repair.status %></p>
-    <p class="card-text"><strong>Reported Issue:</strong> <%= @repair.reported_issue %></p>
-    <p class="card-text"><strong>Promised Return:</strong> <%= @repair.promised_return_on%></p>
-    <p class="card-text">
-      <strong>Return date:</strong>
+    <p class="fs-5 m-2 "><strong>Status:</strong> <%= @repair.status %></p>
+    <p class="fs-5 m-2 "><strong>Reported Issue:</strong> <%= @repair.reported_issue %></p>
+    <p class="fs-5 m-2 "><strong>Promised Return:</strong> <%= @repair.promised_return_on%></p>
+    <p class="fs-5 m-2 "><strong>Return date:</strong>
       <%= @repair.closed_at.nil? ? "Not yet returned" : @repair.closed_at.strftime("%B %d, %Y at %I:%M %p") %>
     </p>
 
-    <p class="card-text">
-      <strong>Bike:</strong>
+    <p class="fs-5 m-2 "><strong>Bike:</strong>
       <%= link_to @repair.bike.serial_number, bike_path(@repair.bike) %>
     </p>
-    <p class="card-text">
-      <strong>Brought in by:</strong>
+    <p class="fs-5 m-2 "><strong>Brought in by:</strong>
       <%= link_to @repair.customer.name, customer_path(@repair.customer) %>
     </p>
-    <p class="card-text">
-      <strong>Mechanic:</strong>
+   <p class="fs-5 m-2 "><strong>Mechanic:</strong>
       <% if @repair.assigned_mechanic.present? %>
         <%= link_to @repair.assigned_mechanic.name, staff_member_path(@repair.assigned_mechanic) %>
       <% else %>
         Unassigned
       <% end %>
     </p>
-  </div>
-</div>
+</section>
 
-<h2>Services Charged</h2>
+<h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white">Services Charged</h2>
 
 <% if @repair.repair_services.any? %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Service</th>
-        <th>Price Charged</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @repair.repair_services.each do |line| %>
-        <tr>
-          <td><%= line.service_catalog.name %></td>
-          <td><%= number_to_currency(line.agreed_price) %></td>
+  <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm mb-3">
+    <table class="table table-hover m-0">
+      <thead>
+        <tr class="table-header-yellow border-bottom border-2 border-secondary">
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Service</th>
+          <th scope="col" class="text-end fw-bold">Price Charged</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <p><strong>Total:</strong> <%= number_to_currency(
-    @repair.repair_services.sum { |item| item.agreed_price }
-  ) %></p>
+      </thead>
+      <tbody>
+        <% @repair.repair_services.each do |line| %>
+          <tr class="table-row-dark">
+            <td class="text-start py-2 fw-bold pt-2 border-end border-secondary"><%= line.service_catalog.name %></td>
+            <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= number_to_currency(line.agreed_price) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <p class="fs-5"><strong class="text-primary">Total:</strong> <%= number_to_currency(@repair.repair_services.sum { |item| item.agreed_price }) %></p>
 <% else %>
   <p>No services appear on this repair</p>
 <% end %>
 
-<%= link_to "Back to Repairs", repairs_path %>
+<%= link_to "Back to Repairs", repairs_path, class: "btn btn-primary" %>

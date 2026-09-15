@@ -1,6 +1,6 @@
 <tr class="table-row-dark">
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary"><%= link_to bike.serial_number, bike_path(bike) %></td>
-  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary"><%= bike.make_model %></td>
-  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary"><%= bike.colour %></td>
+  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-md-table-cell"><%= bike.make_model %></td>
+  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-md-table-cell"><%= bike.colour %></td>
   <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= link_to bike.customer.name, customer_path(bike.customer) %></td>
 </tr>

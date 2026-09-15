@@ -1,10 +1,8 @@
 <% content_for(:title, @staff_member.name) %>
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h1 class="card-title"><%= @staff_member.name %></h1>
-    <p class="card-text"><strong>Role:</strong> <%= @staff_member.role %></p>
-  </div>
-</div>
+<section class="customer-info mb-4 border p-3 rounded-5 border-primary border-3 text-start">
+    <h1 class="mb-3 border-bottom border-primary pb-3"><%= @staff_member.name %></h1>
+    <p class="fs-5 m-2 "><strong>Role:</strong> <%= @staff_member.role %></p>
+</section>
 
 <%= link_to "Back to Staff", staff_members_path %>

@@ -1,40 +1,37 @@
 <% content_for(:title, "#{@bike.make_model} - #{@bike.serial_number}") %>
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h1 class="card-title"><%= @bike.serial_number %></h1>
-    <p class="card-text"><strong>Make/Model:</strong> <%= @bike.make_model %></p>
-    <p class="card-text"><strong>Colour:</strong> <%= @bike.colour %></p>
-    <p class="card-text">
-      <strong>Owner:</strong>
-      <%= link_to @bike.customer.name, customer_path(@bike.customer) %>
-    </p>
-  </div>
-</div>
+<section class="customer-info mb-4 border p-3 rounded-5 border-primary border-3 text-start">
+    <h1 class="mb-3 border-bottom border-primary pb-3"><%= @bike.serial_number %></h1>
+    <p class="fs-5 m-2 "><strong>Make/Model:</strong> <%= @bike.make_model %></p>
+    <p class="fs-5 m-2"><strong>Colour:</strong> <%= @bike.colour %></p>
+    <p class="fs-5 m-2"><strong>Owner: </strong><%= link_to @bike.customer.name, customer_path(@bike.customer) %></p>
+</section>
 
-<h2>Repair History</h2>
+<h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white">Repair History</h2>
 
 <% if @bike.repairs.any? %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Bike</th>
-        <th>Customer</th>
-        <th>Mechanic</th>
-        <th>Returned</th>
-        <th>Status</th>
-        <th>Promised Date</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @bike.repairs.each do |repair| %>
-        <%= render "repairs/repair", repair: repair %>
+  <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm mb-3">
+    <table class="table table-hover m-0">
+      <thead>
+        <tr class="table-header-yellow border-bottom border-2 border-secondary">
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Bike</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Customer</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary d-none d-md-table-cell">Mechanic</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary d-none d-md-table-cell">Returned</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary d-none d-md-table-cell">Status</th>
+          <th scope="col" class="text-start fw-bold border-end border-secondary">Promised Date</th>
+          <th scope="col" class="text-end fw-bold"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @bike.repairs.each do |repair| %>
+          <%= render "repairs/repair", repair: repair %>
         <% end %>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 <% else %>
   <p>This bike has not been worked on here</p>
 <% end %>
 
-<%= link_to "Back to Bikes", bikes_path %>
+<%= link_to "Back to Bikes", bikes_path, class: "btn btn-primary" %>
