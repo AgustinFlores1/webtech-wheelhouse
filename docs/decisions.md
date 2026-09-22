@@ -8,3 +8,6 @@
 
 3. ¿Is there a policy for bikes that a costumer doesnt come back to recorver, or they can stay infinitely in a completed state?
     * The assumption was that every bike will be recovered by the costumer, but if not the case and the costumer never appears, there could be a new state for bikes as "Not recoveres" or something else that indicates the owner didnt come back after certain dates and the bike stops being associated with them in the system
+
+4. ¿Does the person that goes in for a repair matter or that the bike has a repair?
+    * The assumption was that we store the person that did the repair to associate it with them, then that customer owns that reapir rather than the current owner of the bike
