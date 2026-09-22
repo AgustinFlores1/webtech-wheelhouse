@@ -4,7 +4,15 @@ class ServiceCatalog < ApplicationRecord
 
   scope :list_by_name, -> { order(:name) }
 
+  before_validation :format_service_name
+
   validates :current_price, presence: true, numericality: { greater_than: 0 }
   validates :is_active, inclusion: { in: [ true, false ] }
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  private
+
+  def format_service_name
+    self.name = name.strip if name.present?
+  end
 end
