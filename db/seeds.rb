@@ -147,6 +147,7 @@ repairs_data = [
     created_at: Time.current.beginning_of_day + 9.hours,
     promised_return_on: Date.current,
     assigned_mechanic: alkahul,
+    estimated_price: 50,
     closed_at: Time.current.beginning_of_day + 14.hours },
 
   # 11. Another one currently waiting on approval,

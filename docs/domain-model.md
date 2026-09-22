@@ -82,7 +82,7 @@ Table repair_service {
 
 ## The thing or the copy of the thing
 
-The mix-up the owner has in March is that they got to identical bikes and they couldnt figure out which was from one owner or the other one. So my model solves this by making every bike a separate entity with its own id and customer_id, so that when you search for a bikes serial or the bikes id, you get the customers id and then its contact information. 
+The mix-up the owner has in March is that they got to identical bikes and they couldnt figure out which was from one owner or the other one. So my model solves this by making every bike a separate entity with its own id and customer_id, so that when you search for a bikes serial or the bikes id, you get the customers id and then its contact information.
 
 A quantity column (in for example a currently worked on bikes), would fail to solve the problem beucase you will not have a way of identifying the owner of the bike, and so inevitably mix-up two identical looking bikes.
 
