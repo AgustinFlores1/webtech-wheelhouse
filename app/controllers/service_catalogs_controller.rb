@@ -1,6 +1,6 @@
 class ServiceCatalogsController < ApplicationController
   def index
-    @service_catalogs_list = ServiceCatalog.order(:name)
+    @service_catalogs_list = ServiceCatalog.list_by_name
   end
 
   def show

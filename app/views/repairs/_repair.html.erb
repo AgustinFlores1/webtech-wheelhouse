@@ -1,4 +1,4 @@
-<tr class="<%= repair.promised_return_on < Date.current && repair.closed_at.nil? ? "table-overdue" : "table-row-dark" %>">
+<tr class="<%= repair.overdue? ? "table-overdue" : "table-row-dark" %>">
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
     <%= link_to repair.bike.serial_number, bike_path(repair.bike) %>
   </td>

@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @bike.repairs.each do |repair| %>
+        <% @bike.repairs.list_by_created_at.each do |repair| %>
           <%= render "repairs/repair", repair: repair %>
         <% end %>
       </tbody>

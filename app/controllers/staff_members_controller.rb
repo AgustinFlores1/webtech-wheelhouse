@@ -1,6 +1,6 @@
 class StaffMembersController < ApplicationController
   def index
-    @staff_members_list = StaffMember.order(:role)
+    @staff_members_list = StaffMember.list_by_role
   end
 
   def show

@@ -15,6 +15,11 @@ class Repair < ApplicationRecord
     closed: "closed"
   }
 
+  scope :not_returned, -> { where(closed_at: nil) }
+  scope :overdue, -> { not_returned.where("promised_return_on < ?", Date.current) }
+  scope :list_by_promised_return_on, -> { order(:promised_return_on) }
+  scope :list_by_created_at, -> { order(created_at: :desc) }
+
   validates :estimated_price, numericality: { greater_than: 0, allow_nil: true }
   validates :promised_return_on, presence: true
   validates :status, presence: true
@@ -23,6 +28,14 @@ class Repair < ApplicationRecord
   validate :valid_hand_back_time
   validate :valid_promised_return_time
   validate :valid_change_in_state
+
+  def overdue?
+    closed_at.nil? && promised_return_on < Date.current
+  end
+
+  def total
+    repair_services.sum(&:agreed_price)
+  end
 
   private
 

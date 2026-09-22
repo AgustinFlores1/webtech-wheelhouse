@@ -1,6 +1,6 @@
 class BikesController < ApplicationController
   def index
-    @bikes_list = Bike.order(:customer_id)
+    @bikes_list = Bike.list_by_customer
   end
 
   def show

@@ -37,7 +37,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @repair.repair_services.each do |line| %>
+        <% @repair.repair_services.list_by_service_name.each do |line| %>
           <tr class="table-row-dark">
             <td class="text-start py-2 fw-bold pt-2 border-end border-secondary"><%= line.service_catalog.name %></td>
             <td class="text-end py-2 fw-bold pt-2 border-start border-secondary"><%= number_to_currency(line.agreed_price) %></td>
@@ -46,7 +46,7 @@
       </tbody>
     </table>
   </div>
-  <p class="fs-5"><strong class="text-primary">Total:</strong> <%= number_to_currency(@repair.repair_services.sum { |item| item.agreed_price }) %></p>
+  <p class="fs-5"><strong class="text-primary">Total:</strong> <%= number_to_currency(@repair.total) %></p>
 <% else %>
   <p>No services appear on this repair</p>
 <% end %>
