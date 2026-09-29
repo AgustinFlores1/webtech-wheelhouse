@@ -39,4 +39,8 @@
   <p>This customer doesn't own any bikes</p>
 <% end %>
 
+<div class="d-flex justify-content-end mt-2 py-2">
+  <%= link_to "New Bike", new_bike_path(customer_id: @customer.id), class: "btn btn-outline-primary" %>
+</div>
+
 <%= link_to "Back to Customers", customers_path, class: "btn btn-primary" %>

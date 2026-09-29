@@ -1,0 +1,40 @@
+<%= form_with model: bike do |f| %>
+  <%= render "shared/error_summary", record: bike %>
+
+  <div class="mb-3">
+    <%= f.label :serial_number, class: "form-label" %>
+    <%= f.text_field :serial_number,
+          class: ["form-control", { "is-invalid": bike.errors.include?(:serial_number) }] %>
+    <% bike.errors.full_messages_for(:serial_number).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :make_model, class: "form-label" %>
+    <%= f.text_field :make_model,
+          class: ["form-control", { "is-invalid": bike.errors.include?(:make_model) }] %>
+    <% bike.errors.full_messages_for(:make_model).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :colour, class: "form-label" %>
+    <%= f.text_field :colour,
+          class: ["form-control", { "is-invalid": bike.errors.include?(:colour) }] %>
+    <% bike.errors.full_messages_for(:colour).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :customer_id, "Owner", class: "form-label" %>
+    <%= f.collection_select :customer_id, customers, :id, :name,
+          { prompt: "Select an owner" },
+          class: ["form-select", { "is-invalid": bike.errors.include?(:customer) }] %>
+    <% bike.errors.full_messages_for(:customer).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+  <%= link_to "Cancel", bikes_path, class: "btn btn-outline-secondary" %>
+<% end %>

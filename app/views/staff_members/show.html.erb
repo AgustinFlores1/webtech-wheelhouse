@@ -1,8 +1,17 @@
 <% content_for(:title, @staff_member.name) %>
 
-<section class="customer-info mb-4 border p-3 rounded-5 border-primary border-3 text-start">
+<section class="mb-4 border p-3 rounded-5 border-primary border-3 text-start">
     <h1 class="mb-3 border-bottom border-primary pb-3"><%= @staff_member.name %></h1>
     <p class="fs-5 m-2 "><strong>Role:</strong> <%= @staff_member.role %></p>
 </section>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <%= link_to "Edit", edit_staff_member_path(@staff_member), class: "btn btn-outline-secondary" %>
+  
+  <%= button_to "Delete", staff_member_path(@staff_member),
+      method: :delete,
+      class: "btn btn-outline-danger",
+      form: { data: { turbo_confirm: "Are you sure you want to delete the staff member \"#{@staff_member.name}\"?" } } %>
+</div>
 
 <%= link_to "Back to Staff", staff_members_path %>

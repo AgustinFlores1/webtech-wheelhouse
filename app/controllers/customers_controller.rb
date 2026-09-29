@@ -1,5 +1,6 @@
 class CustomersController < ApplicationController
   before_action :set_customer, only: %i[show edit update destroy]
+
   def index
     @customers_list = Customer.list_by_name
   end

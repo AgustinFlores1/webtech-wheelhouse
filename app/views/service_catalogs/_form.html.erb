@@ -1,0 +1,27 @@
+<%= form_with model: service_catalog do |f| %>
+  <%= render "shared/error_summary", record: service_catalog %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name,
+          class: ["form-control", { "is-invalid": service_catalog.errors.include?(:name) }] %>
+    <% service_catalog.errors.full_messages_for(:name).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :current_price, class: "form-label" %>
+    <%= f.number_field :current_price, step: "0.01",
+          class: ["form-control", { "is-invalid": service_catalog.errors.include?(:current_price) }] %>
+    <% service_catalog.errors.full_messages_for(:current_price).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="form-check mb-3">
+    <%= f.check_box :is_active, class: "form-check-input" %>
+    <%= f.label :is_active, "Active", class: "form-check-label" %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+  <%= link_to "Cancel", staff_members_path, class: "btn btn-outline-secondary" %>
+<% end %>
