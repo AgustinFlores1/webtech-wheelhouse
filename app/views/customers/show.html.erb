@@ -6,8 +6,16 @@
   <h1 class="mb-3 border-bottom border-primary pb-3"><%= @customer.name %></h1>
   <p class="fs-5 m-0"><strong class="text-primary">Phone:</strong> <%= @customer.phone %></p>
 </section>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <%= link_to "Edit", edit_customer_path(@customer), class: "btn btn-outline-secondary" %>
+  
+  <%= button_to "Delete", customer_path(@customer),
+      method: :delete,
+      class: "btn btn-outline-danger",
+      form: { data: { turbo_confirm: "Are you sure you want to delete the customer \"#{@customer.name}\"?" } } %>
+</div>
 
-<h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white">Bikes Owned</h2>
+<h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white text-center">Bikes Owned</h2>
 
 <% if @customer.bikes.any? %>
   <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm mb-3">
