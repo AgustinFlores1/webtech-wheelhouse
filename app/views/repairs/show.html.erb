@@ -25,6 +25,13 @@
     </p>
 </section>
 
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <%= link_to "Edit", edit_repair_path(@repair), class: "btn btn-outline-secondary" %>
+  <%= button_to "Delete", repair_path(@repair), method: :delete,
+        class: "btn btn-outline-danger",
+        form: { data: { turbo_confirm: "Are you sure you want to delete the repair \"#{@repair.id}\"?" } } %>
+</div>
+
 <h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white">Services Charged</h2>
 
 <% if @repair.repair_services.any? %>

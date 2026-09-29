@@ -1,0 +1,96 @@
+<%= form_with model: repair do |f| %>
+  <%= render "shared/error_summary", record: repair %>
+
+  <div class="mb-3">
+    <%= f.label :bike_id, "Bike", class: "form-label" %>
+    <%= f.collection_select :bike_id, bikes, :id, :serial_number,
+          { prompt: "Select a bike" },
+          class: ["form-select", { "is-invalid": repair.errors.include?(:bike) }] %>
+    <% repair.errors.full_messages_for(:bike).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :customer_id, "Customer", class: "form-label" %>
+    <%= f.collection_select :customer_id, customers, :id, :name,
+          { prompt: "Select a customer" },
+          class: ["form-select", { "is-invalid": repair.errors.include?(:customer) }] %>
+    <% repair.errors.full_messages_for(:customer).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :assigned_mechanic_id, "Mechanic", class: "form-label" %>
+    <%= f.collection_select :assigned_mechanic_id, mechanics, :id, :name,
+          { include_blank: "No mechanic yet" }, class: "form-select" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :status, class: "form-label" %>
+    <%= f.select :status, Repair.statuses.keys.map { |s| [ s.humanize, s ] }, {},
+          class: ["form-select", { "is-invalid": repair.errors.include?(:status) }] %>
+    <% repair.errors.full_messages_for(:status).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :reported_issue, class: "form-label" %>
+    <%= f.text_area :reported_issue, rows: 3,
+          class: ["form-control", { "is-invalid": repair.errors.include?(:reported_issue) }] %>
+    <% repair.errors.full_messages_for(:reported_issue).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :promised_return_on, class: "form-label" %>
+    <%= f.date_field :promised_return_on,
+          class: ["form-control", { "is-invalid": repair.errors.include?(:promised_return_on) }] %>
+    <% repair.errors.full_messages_for(:promised_return_on).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :estimated_price, class: "form-label" %>
+    <%= f.number_field :estimated_price, step: "0.01",
+          class: ["form-control", { "is-invalid": repair.errors.include?(:estimated_price) }] %>
+    <% repair.errors.full_messages_for(:estimated_price).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :closed_at, "Handed back at", class: "form-label" %>
+    <%= f.datetime_local_field :closed_at,
+            class: ["form-control", { "is-invalid": repair.errors.include?(:closed_at) }] %>
+    <% repair.errors.full_messages_for(:closed_at).each do |message| %>
+        <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <h2 class="h5 mt-4">Services</h2>
+  <%= f.fields_for :repair_services do |line| %>
+    <div class="row g-2 mb-2">
+      <div class="col-md-6">
+        <%= line.label :service_catalog_id, "Service", class: "form-label" %>
+        <%= line.collection_select :service_catalog_id, services, :id, :name,
+              { prompt: "Select a service" },
+              class: ["form-select", { "is-invalid": line.object.errors.include?(:service_catalog) }] %>
+      </div>
+      <div class="col-md-4">
+        <%= line.label :agreed_price, "Charged price", class: "form-label" %>
+        <%= line.number_field :agreed_price, step: "0.01",
+              class: ["form-control", { "is-invalid": line.object.errors.include?(:agreed_price) }] %>
+        <% line.object.errors.full_messages_for(:agreed_price).each do |message| %>
+          <div class="invalid-feedback"><%= message %></div>
+        <% end %>
+      </div>
+      <% if line.object.persisted? %>
+        <div class="col-md-2 form-check pt-4">
+          <%= line.check_box :_destroy, class: "form-check-input" %>
+          <%= line.label :_destroy, "Remove", class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= f.submit class: "btn btn-primary mt-3" %>
+  <%= link_to "Cancel", repairs_path, class: "btn btn-outline-secondary mt-3" %>
+<% end %>

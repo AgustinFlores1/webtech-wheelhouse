@@ -5,6 +5,10 @@ class Repair < ApplicationRecord
   has_many :repair_services, dependent: :destroy
   has_many :services, through: :repair_services, source: :service_catalog
 
+  accepts_nested_attributes_for :repair_services,
+    allow_destroy: true,
+    reject_if: ->(attrs) { attrs["service_catalog_id"].blank? }
+
   enum :status, {
     arrived: "arrived",
     pending_approval: "pending_approval",
@@ -46,7 +50,7 @@ class Repair < ApplicationRecord
   end
 
   def valid_promised_return_time
-    if created_at.present? && created_at.to_date > promised_return_on
+    if created_at.present? &&  promised_return_on.present? && created_at.to_date > promised_return_on
       errors.add(:promised_return_on, "date cannot be before the repair is created")
     end
   end

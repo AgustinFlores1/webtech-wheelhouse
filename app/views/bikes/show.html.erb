@@ -41,4 +41,8 @@
   <p>This bike has not been worked on here</p>
 <% end %>
 
+<div class="d-flex justify-content-center mt-2 py-2">
+  <%= link_to "New Repair", new_repair_path(bike_id: @bike.id), class: "btn btn-outline-primary" %>
+</div>
+
 <%= link_to "Back to Bikes", bikes_path, class: "btn btn-primary" %>

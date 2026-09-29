@@ -1,0 +1,4 @@
+<%# new.html.erb %>
+<% content_for :title, "New Repair" %>
+<h1>New repair</h1>
+<%= render "form", repair: @repair, bikes: @bikes, customers: @customers, mechanics: @mechanics, services: @services %>
