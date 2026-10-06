@@ -21,6 +21,7 @@ Too be able to run this aplication locally in your own system you will need the 
 * [Node 26.1.x](https://nodejs.org/en)
 * [Yarn 1.22.x](https://yarnpkg.com)
 * [PostgreSQL 16.x](https://www.postgresql.org/docs/current/) — running locally, with a role that can create databases
+* [libvips 8.x](https://www.libvips.org/install.html) — the image library that generates the photo thumbnails
 
 ## Prerequisites Installation Guides
 
@@ -31,12 +32,13 @@ For the installation it is recommended you use version managers for Ruby and Nod
 
 * [Git - Install](https://git-scm.com/install/) , Which covers git installation for every operating system
 
-After following the installation guides above, use the following comands on your respective terminal (zsh, bash, powershell, etc...) to install Yarn:
+After following the installation guides above, use the following commands in your terminal (zsh, bash, powershell, etc...) to install Yarn and libvips:
 
 ### MacOS (zsh | bash)
 
 ```zsh
 brew install yarn
+brew install vips
 ```
 
 ### Linux (bash)
@@ -44,7 +46,10 @@ brew install yarn
 ```bash
 sudo apt update
 sudo npm install --global yarn
+sudo apt install -y libvips-tools
 ```
+
+`libvips-tools` installs the libvips library together with the `vips` command line tool.
 
 ### Windows
 
@@ -93,6 +98,18 @@ Then create, load, and seed the database in one step:
 
 ```bash
 bin/rails db:setup
+```
+
+### Seed data
+
+The seed creates customers, bikes, staff, services and repairs. Most repairs come with intake photos and a
+diagnosis. The photos are in `db/seeds/` and were taken by the author of this repository. Uploaded photos
+are stored in the `storage/` folder, which is not committed.
+
+The seed can be run again at any time with the following command:
+
+```bash
+bin/rails db:seed
 ```
 
 ## Running the Aplication Locally
