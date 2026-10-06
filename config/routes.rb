@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   resources :customers
   resources :bikes
   resources :staff_members
-  resources :repairs
+
+  resources :repairs do
+    resources :intake_photos, only: :destroy
+  end
+
   resources :service_catalogs, path: "services"
 end
