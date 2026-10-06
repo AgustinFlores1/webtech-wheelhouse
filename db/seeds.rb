@@ -8,6 +8,11 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+ActionText::RichText.delete_all
+ActiveStorage::Attachment.delete_all
+ActiveStorage::VariantRecord.delete_all
+ActiveStorage::Blob.find_each(&:purge)
+
 RepairService.delete_all
 ServiceCatalog.delete_all
 Repair.delete_all
@@ -54,7 +59,6 @@ services_data = [
   { name: "Kickstand Installation",   current_price: 10 },
   { name: "Basket/Rack Installation", current_price: 18 }
 ]
-
 services = services_data.map { |attrs| ServiceCatalog.create!(attrs) }
 services_by_name = services.index_by(&:name)
 
@@ -65,7 +69,6 @@ staff_data = [
   { name: "Roberto Autumn",   role: "mechanic" },
   { name: "Alkahul Cawera",   role: "mechanic"}
 ]
-
 staff = staff_data.map { |attrs| StaffMember.create!(attrs) }
 
 bikes_data = [
@@ -91,56 +94,83 @@ bikes = bikes_data.map do |b|
     customer_id: customer_by_name.fetch(b[:owner]).id
   )
 end
-
 bikes_by_serial = bikes.index_by(&:serial_number)
+
+seed_photo = lambda do |file, filename = file.downcase|
+  Rails.root.join("db/seeds", file).open("rb") do |io|
+    ActiveStorage::Blob.create_and_upload!(io: io, filename: filename).tap(&:analyze)
+  end
+end
+front  = seed_photo.("bicicleta1.JPG")
+side   = seed_photo.("bicicleta2.JPG")
+rear   = seed_photo.("bicicleta3.JPG")
+detail = seed_photo.("bicicleta2.JPG", "bicicleta2_detail.jpg") # a separate blob: one blob can't be attached twice to the same repair
+
 
 mechanics = staff.select { |s| s.role == "mechanic" }
 carlos, roberto, alkahul = mechanics[0], mechanics[1], mechanics[2]
 
 repairs_data = [
-  # 1. Fresh arrival, nothing known yet — no estimate, no mechanic
+  # 1. Fresh arrival, nothing known yet — no estimate, no mechanic, no diagnosis
   { bike: "TRK-8827-A", status: "arrived",
-    created_at: Time.current, promised_return_on: 4.days.from_now.to_date },
+    created_at: Time.current, promised_return_on: 4.days.from_now.to_date,
+    photos: [ front, side ] },
 
   # 2. Same bike as #1, but an already-closed repair — "one bike, more than one repair, different dates"
   { bike: "TRK-8827-A", status: "closed",
     created_at: 20.days.ago, promised_return_on: 17.days.ago.to_date,
-    estimated_price: 30, assigned_mechanic: carlos, closed_at: 16.days.ago },
+    estimated_price: 30, assigned_mechanic: carlos, closed_at: 16.days.ago,
+    photos: [ rear ],
+    diagnosis: "<div><strong>Rear brake not biting.</strong></div><ul><li>Pads glazed but still thick</li><li>Caliper needs re-centering</li></ul>" },
 
   # 3. Quoted, waiting on the customer's answer
   { bike: "GNT-1140-C", status: "pending_approval",
     created_at: 2.days.ago, promised_return_on: 5.days.from_now.to_date,
-    estimated_price: 45 },
+    estimated_price: 45,
+    photos: [ side ],
+    diagnosis: "<div><strong>Drivetrain worn.</strong></div><ul><li>Chain at 0.75% stretch</li><li>Cassette still usable</li></ul>" },
 
   # 4. Approved, but no mechanic has picked it up yet
   { bike: "TRK-9931-B", status: "approved",
     created_at: 1.day.ago, promised_return_on: 4.days.from_now.to_date,
-    estimated_price: 60 },
+    estimated_price: 60,
+    photos: [ front, rear ],
+    diagnosis: "<div><strong>Rear wheel out of true.</strong></div><ul><li>Two broken spokes on the drive side</li><li>No cracks in the rim</li></ul>" },
 
   # 5. "Customer heard the price and said no"
   { bike: "SPC-2214-D", status: "declined",
     created_at: 3.days.ago, promised_return_on: 2.days.from_now.to_date,
-    estimated_price: 80 },
+    estimated_price: 80,
+    photos: [ side ],
+    diagnosis: "<div><strong>Fork seals leaking.</strong></div><ul><li>Oil on the stanchions</li><li>Full fork service recommended</li></ul>" },
 
-  # 6. A mechanic is actively working on it right now
+  # 6. A mechanic is actively working on it right now — the repair with four photos
   { bike: "GNT-5567-E", status: "in_progress",
     created_at: 5.days.ago, promised_return_on: 1.day.from_now.to_date,
-    estimated_price: 55, assigned_mechanic: roberto },
+    estimated_price: 55, assigned_mechanic: roberto,
+    photos: [ front, side, rear, detail ],
+    diagnosis: "<div><strong>Shifting skips under load.</strong></div><ul><li>Chain worn past the limit</li><li>Derailleur cable tension too low</li></ul>" },
 
   # 7. Work is done, just sitting on the rack waiting for pickup
   { bike: "CAN-3321-F", status: "completed",
     created_at: 6.days.ago, promised_return_on: 1.day.ago.to_date,
-    estimated_price: 40, assigned_mechanic: alkahul },
+    estimated_price: 40, assigned_mechanic: alkahul,
+    photos: [ rear ],
+    diagnosis: "<div><strong>General wear after a long season.</strong></div><ul><li>Gears and brakes out of adjustment</li><li>Full tune-up done</li></ul>" },
 
   # 8. An ordinary closed repair
   { bike: "TRK-6650-G", status: "closed",
     created_at: 25.days.ago, promised_return_on: 22.days.ago.to_date,
-    estimated_price: 35, assigned_mechanic: carlos, closed_at: 21.days.ago },
+    estimated_price: 35, assigned_mechanic: carlos, closed_at: 21.days.ago,
+    photos: [ front ],
+    diagnosis: "<div><strong>Front tube punctured.</strong></div><ul><li>Glass shard in the tyre, removed</li><li>Tyre casing undamaged</li></ul>" },
 
   # 9. OVERDUE - still not handed back
   { bike: "SCT-4482-H", status: "in_progress",
     created_at: 10.days.ago, promised_return_on: 3.days.ago.to_date,
-    estimated_price: 90, assigned_mechanic: roberto },
+    estimated_price: 90, assigned_mechanic: roberto,
+    photos: [ side, rear ],
+    diagnosis: "<div><strong>Rear brake feels spongy.</strong></div><ul><li>Air in the hydraulic line</li><li>Bottom bracket creaking</li><li>Headset loose</li></ul>" },
 
   # 10. In and out today, (no estimated_price)
   { bike: "GNT-7793-I", status: "closed",
@@ -148,31 +178,40 @@ repairs_data = [
     promised_return_on: Date.current,
     assigned_mechanic: alkahul,
     estimated_price: 50,
-    closed_at: Time.current.beginning_of_day + 14.hours },
+    closed_at: Time.current.beginning_of_day + 14.hours,
+    photos: [ front ],
+    diagnosis: "<div><strong>Rear flat tyre.</strong></div><ul><li>Pinch flat from low pressure</li><li>Tube replaced, tyre fine</li></ul>" },
 
   # 11. Another one currently waiting on approval,
   { bike: "CAN-8865-K", status: "pending_approval",
     created_at: Time.current, promised_return_on: 6.days.from_now.to_date,
-    estimated_price: 50 },
+    estimated_price: 50,
+    photos: [ rear ],
+    diagnosis: "<div><strong>Chain skips in the lowest gears.</strong></div><ul><li>Derailleur hanger slightly bent</li><li>Chain needs cleaning</li></ul>" },
 
-  # 12. OLD repair, prices on the list have since changed
+  # 12. OLD repair, prices on the list have since changed — from before the shop took intake photos
   { bike: "TRK-2247-L", status: "closed",
     created_at: 14.months.ago, promised_return_on: 14.months.ago.to_date + 3.days,
-    estimated_price: 38, assigned_mechanic: carlos, closed_at: 14.months.ago + 2.days },
+    estimated_price: 38, assigned_mechanic: carlos, closed_at: 14.months.ago + 2.days,
+    diagnosis: "<div><strong>Overdue for its yearly service.</strong></div><ul><li>Cables stiff</li><li>Brakes and gears need adjustment</li></ul>" },
 
   # 13. A second, older, closed repair on Jhon Skyrim's bike
   { bike: "GNT-1140-C", status: "closed",
     created_at: 40.days.ago, promised_return_on: 37.days.ago.to_date,
-    estimated_price: 25, assigned_mechanic: roberto, closed_at: 38.days.ago },
+    estimated_price: 25, assigned_mechanic: roberto, closed_at: 38.days.ago,
+    photos: [ side ],
+    diagnosis: "<div><strong>Wheel and brakes out of adjustment.</strong></div><ul><li>Front wheel slightly out of true</li><li>Rear brake cable housing cracked</li></ul>" },
 
-  # 14. Sadie's bike back again with a second, brand-new issue
+  # 14. Sadie's bike back again with a second, brand-new issue — just taken in, no photos and no diagnosis yet
   { bike: "SPC-2214-D", status: "arrived",
     created_at: Time.current, promised_return_on: 3.days.from_now.to_date },
 
   # 15. One more approved-but-unassigned
   { bike: "TRK-6650-G", status: "approved",
     created_at: 1.day.ago, promised_return_on: 5.days.from_now.to_date,
-    estimated_price: 42 }
+    estimated_price: 42,
+    photos: [ front ],
+    diagnosis: "<div><strong>Saddle and bars loose.</strong></div><ul><li>Seat post clamp worn</li><li>Handlebar tape torn</li></ul>" }
 ]
 
 repairs = repairs_data.map do |r|
@@ -186,7 +225,9 @@ repairs = repairs_data.map do |r|
     promised_return_on: r[:promised_return_on],
     assigned_mechanic_id: r[:assigned_mechanic]&.id,
     created_at: r[:created_at],
-    closed_at: r[:closed_at]
+    closed_at: r[:closed_at],
+    intake_photos: r.fetch(:photos, []),
+    **r.slice(:diagnosis)
   )
 end
 
