@@ -5,6 +5,14 @@
 
     <p class="fs-5 m-2 "><strong>Status:</strong> <%= @repair.status %></p>
     <p class="fs-5 m-2 "><strong>Reported Issue:</strong> <%= @repair.reported_issue %></p>
+    <div class="fs-5 m-2">
+      <strong>Diagnosis:</strong>
+      <% if @repair.diagnosis.present? %>
+        <%= @repair.diagnosis %>
+      <% else %>
+        Not diagnosed yet
+      <% end %>
+    </div>
     <p class="fs-5 m-2 "><strong>Promised Return:</strong> <%= @repair.promised_return_on%></p>
     <p class="fs-5 m-2 "><strong>Return date:</strong>
       <%= @repair.closed_at.nil? ? "Not yet returned" : @repair.closed_at.strftime("%B %d, %Y at %I:%M %p") %>
@@ -32,7 +40,27 @@
         form: { data: { turbo_confirm: "Are you sure you want to delete the repair \"#{@repair.id}\"?" } } %>
 </div>
 
-<h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white">Services Charged</h2>
+<h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white">Intake Photos</h2>
+<% if @repair.intake_photos.attached? %>
+  <div class="row g-2">
+    <% @repair.intake_photos.each_with_index do |photo, index| %>
+      <div class="col-6 col-md-4 col-lg-3">
+        <%= link_to rails_blob_path(photo, disposition: "inline"), target: "_blank", rel: "noopener" do %>
+          <%= image_tag photo.variant(:large),
+                alt: "Intake photo #{index + 1} of repair ##{@repair.id}, bike #{@repair.bike.serial_number} (#{@repair.bike.make_model})",
+                class: "img-fluid rounded border" %>
+        <% end %>
+        <%= button_to "Remove", repair_intake_photo_path(@repair, photo), method: :delete,
+              class: "btn btn-sm btn-outline-danger mt-1 w-100",
+              form: { data: { turbo_confirm: "Remove photo #{photo.filename} from repair ##{@repair.id}?" } } %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>No intake photos were taken for this repair</p>
+<% end %>
+
+<h2 class="mb-2 mt-4 border-top border-primary pb-3 pt-3 fw-bold text-white">Services Charged</h2>
 
 <% if @repair.repair_services.any? %>
   <div class="table-responsive rounded-4 overflow-hidden border border-2 border-secondary shadow-sm mb-3">

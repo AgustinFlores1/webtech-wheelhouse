@@ -3,7 +3,10 @@ class RepairsController < ApplicationController
   before_action :load_form_options, only: %i[new edit create update]
 
   def index
-    @repairs_list = Repair.includes(:bike, :customer, :assigned_mechanic).list_by_promised_return_on
+    @repairs_list = Repair.includes(:bike, :customer, :assigned_mechanic)
+                          .with_attached_intake_photos
+                          .with_rich_text_diagnosis
+                          .list_by_promised_return_on
   end
 
   def show
@@ -49,8 +52,10 @@ class RepairsController < ApplicationController
   private
 
   def set_repair
-    @repair = Repair.includes(:bike, :customer, :assigned_mechanic,
-                              repair_services: :service_catalog).find(params[:id])
+    @repair = Repair.with_attached_intake_photos
+                    .with_rich_text_diagnosis
+                    .includes(:bike, :customer, :assigned_mechanic, repair_services: :service_catalog)
+                    .find(params[:id])
   end
 
   def load_form_options
@@ -70,7 +75,8 @@ class RepairsController < ApplicationController
     params.expect(
       repair: [
         :bike_id, :customer_id, :assigned_mechanic_id, :status,
-        :reported_issue, :promised_return_on, :estimated_price, :closed_at,
+        :reported_issue, :promised_return_on, :estimated_price, :closed_at, :diagnosis,
+        { intake_photos: [] },
         { repair_services_attributes: [ [ :id, :service_catalog_id, :agreed_price, :_destroy ] ] }
       ]
     )

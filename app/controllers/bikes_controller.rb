@@ -7,6 +7,11 @@ class BikesController < ApplicationController
   end
 
   def show
+    @repairs = @bike.repairs
+                    .includes(:bike, :customer, :assigned_mechanic)
+                    .with_attached_intake_photos
+                    .with_rich_text_diagnosis
+                    .list_by_created_at
   end
 
   def new
@@ -48,7 +53,7 @@ class BikesController < ApplicationController
   end
 
   def set_bike
-    @bike = Bike.includes(:customer, repairs: [ :customer, :assigned_mechanic ]).find(params[:id])
+    @bike = Bike.includes(:customer).find(params[:id])
   end
 
   def bike_params

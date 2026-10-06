@@ -1,6 +1,20 @@
 <tr class="<%= repair.overdue? ? "table-overdue" : "table-row-dark" %>">
+  <td class="py-2 border-end border-secondary" style="width: 112px;">
+    <% photo = repair.intake_photos.first %>
+    <% if photo %>
+      <%= image_tag photo.variant(:thumb), width: 96, height: 96,
+            alt: "Intake photo of repair ##{repair.id}, bike #{repair.bike.serial_number} (#{repair.bike.make_model})",
+            class: "d-block rounded border object-fit-cover" %>
+    <% else %>
+      <div class="d-flex align-items-center justify-content-center rounded border text-secondary small"
+           style="width: 96px; height: 96px;">No photo</div>
+    <% end %>
+  </td>
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
     <%= link_to repair.bike.serial_number, bike_path(repair.bike) %>
+    <div class="d-lg-none small fw-normal text-truncate" style="max-width: 10rem;">
+      <%= repair.diagnosis.present? ? truncate(repair.diagnosis.to_plain_text.squish, length: 60) : "No diagnosis yet" %>
+    </div>
   </td>
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
     <%= link_to repair.customer.name, customer_path(repair.customer) %>
@@ -8,10 +22,15 @@
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-md-table-cell">
     <%= repair.assigned_mechanic.nil? ? "Unassigned" : repair.assigned_mechanic.name %>
   </td>
-  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-md-table-cell">
+  <td class="text-start py-2 pt-2 border-end border-secondary d-none d-lg-table-cell">
+    <div class="text-truncate small" style="max-width: 16rem;">
+      <%= repair.diagnosis.present? ? truncate(repair.diagnosis.to_plain_text.squish, length: 60) : "No diagnosis yet" %>
+    </div>
+  </td>
+  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-lg-table-cell">
     <%= repair.closed_at.nil? ? "Not yet returned" : repair.closed_at.strftime("%B %d, %Y at %I:%M %p") %>
   </td>
-  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-md-table-cell">
+  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-lg-table-cell">
     <%= repair.status %>
   </td>
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">

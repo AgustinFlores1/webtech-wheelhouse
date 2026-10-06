@@ -10,6 +10,7 @@
       <div class="invalid-feedback"><%= message %></div>
     <% end %>
   </div>
+
   <div class="mb-3">
     <%= f.label :customer_id, "Customer", class: "form-label" %>
     <%= f.collection_select :customer_id, customers, :id, :name,
@@ -19,11 +20,13 @@
       <div class="invalid-feedback"><%= message %></div>
     <% end %>
   </div>
+
   <div class="mb-3">
     <%= f.label :assigned_mechanic_id, "Mechanic", class: "form-label" %>
     <%= f.collection_select :assigned_mechanic_id, mechanics, :id, :name,
           { include_blank: "No mechanic yet" }, class: "form-select" %>
   </div>
+
   <div class="mb-3">
     <%= f.label :status, class: "form-label" %>
     <%= f.select :status, Repair.statuses.keys.map { |s| [ s.humanize, s ] }, {},
@@ -32,6 +35,7 @@
       <div class="invalid-feedback"><%= message %></div>
     <% end %>
   </div>
+
   <div class="mb-3">
     <%= f.label :reported_issue, class: "form-label" %>
     <%= f.text_area :reported_issue, rows: 3,
@@ -40,6 +44,12 @@
       <div class="invalid-feedback"><%= message %></div>
     <% end %>
   </div>
+
+   <div class="mb-3">
+    <%= f.label :diagnosis, "Mechanic's diagnosis", class: "form-label" %>
+    <%= f.rich_textarea :diagnosis, class: "form-control" %>
+  </div>
+
   <div class="mb-3">
     <%= f.label :promised_return_on, class: "form-label" %>
     <%= f.date_field :promised_return_on,
@@ -48,6 +58,7 @@
       <div class="invalid-feedback"><%= message %></div>
     <% end %>
   </div>
+
   <div class="mb-3">
     <%= f.label :estimated_price, class: "form-label" %>
     <%= f.number_field :estimated_price, step: "0.01",
@@ -56,6 +67,7 @@
       <div class="invalid-feedback"><%= message %></div>
     <% end %>
   </div>
+
   <div class="mb-3">
     <%= f.label :closed_at, "Handed back at", class: "form-label" %>
     <%= f.datetime_local_field :closed_at,
@@ -63,6 +75,22 @@
     <% repair.errors.full_messages_for(:closed_at).each do |message| %>
         <div class="invalid-feedback"><%= message %></div>
     <% end %>
+  </div>
+
+    <div class="mb-3">
+    <%= f.label :intake_photos, "Intake photos", class: "form-label" %>
+    <% repair.intake_photos.each do |photo| %>
+      <% if photo.persisted? %>
+        <%= f.hidden_field :intake_photos, multiple: true, value: photo.signed_id %>
+      <% end %>
+    <% end %>
+    <%= f.file_field :intake_photos, multiple: true,
+          accept: Repair::INTAKE_PHOTO_TYPES.join(","),
+          class: ["form-control", { "is-invalid": repair.errors.include?(:intake_photos) }] %>
+    <% repair.errors.full_messages_for(:intake_photos).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+    <div class="form-text">JPEG, PNG or WebP, up to 10 MB each. New photos are added to the ones already on the repair.</div>
   </div>
 
   <h2 class="h5 mt-4">Services</h2>
