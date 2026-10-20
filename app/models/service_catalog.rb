@@ -3,6 +3,7 @@ class ServiceCatalog < ApplicationRecord
   has_many :repairs, through: :repair_services, source: :repair
 
   scope :list_by_name, -> { order(:name) }
+  scope :active, -> { where(is_active: true) }
 
   before_validation :format_service_name
 

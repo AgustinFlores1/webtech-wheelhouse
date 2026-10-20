@@ -23,4 +23,11 @@ Rails.application.routes.draw do
   end
 
   resources :service_catalogs, path: "services"
+
+  namespace :api do
+    namespace :v1, defaults: { format: :json } do
+      resources :services, only: [ :index, :show, :create ]
+      resources :repairs, only: [ :index, :show ]
+    end
+  end
 end

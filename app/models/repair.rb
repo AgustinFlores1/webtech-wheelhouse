@@ -53,6 +53,14 @@ class Repair < ApplicationRecord
     repair_services.sum(&:agreed_price)
   end
 
+  def customer_answer
+    if declined?
+      :declined
+    elsif approved? || in_progress? || completed? || closed?
+      :approved
+    end
+  end
+
   private
 
   def valid_hand_back_time
