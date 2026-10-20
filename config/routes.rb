@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     namespace :v1, defaults: { format: :json } do
       resources :services, only: [ :index, :show, :create ]
       resources :repairs, only: [ :index, :show ]
+      match "*path", to: "base#route_not_found", via: :all
     end
   end
 end

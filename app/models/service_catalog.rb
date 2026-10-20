@@ -7,7 +7,7 @@ class ServiceCatalog < ApplicationRecord
 
   before_validation :format_service_name
 
-  validates :current_price, presence: true, numericality: { greater_than: 0 }
+  validates :current_price, presence: true, numericality: { greater_than: 0, less_than: 100_000_000 }
   validates :is_active, inclusion: { in: [ true, false ] }
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 

@@ -15,6 +15,10 @@ module Api
         render_errors("The request body is not valid JSON", :bad_request)
       end
 
+      def route_not_found
+        render_errors("There is no route for #{request.method} #{request.path}", :not_found)
+      end
+
       private
 
       def authenticate
