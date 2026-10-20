@@ -10,7 +10,6 @@ module Api
       end
 
       # GET /api/v1/services/:id
-      # An inactive service is not on the wall, so here it answers 404 like a missing one.
       def show
         service = ServiceCatalog.active.includes(:repair_services).find(params[:id])
         render json: service_document(service)
@@ -32,20 +31,12 @@ module Api
         { name: attributes[:name], current_price: attributes[:price] }
       end
 
-      # The document of a service. The one place its shape is written: index, show and
-      # (requirement 4) create all call it, so a client parses one shape.
-      # is_active, created_at and updated_at are columns, but nobody reading the wall needs them.
+      # The document of a service.
       def service_document(service)
         {
           id: service.id,
           name: service.name,
-          # A decimal column arrives as a BigDecimal, and Rails writes a BigDecimal into JSON as
-          # a string ("20.0"). Converted here so the price travels as a number (docs/api.md).
           price: service.current_price.to_f,
-          # Not a column: on how many repairs this service was charged. repair_services was
-          # preloaded by includes, so this reads memory, not the database once per service.
-          # uniq: the repair form does not stop the same service on two lines of one repair,
-          # and that is still one repair.
           times_charged: service.repair_services.map(&:repair_id).uniq.size
         }
       end

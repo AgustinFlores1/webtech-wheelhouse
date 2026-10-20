@@ -12,7 +12,7 @@ The shop's website reads the price list, the accounting program reads the repair
 
 Reading the price list is open. Reading repairs and creating a service need a token, used with the next command on every request:
 
-```ruby
+```http
 Authorization: Bearer <token>
 ```
 

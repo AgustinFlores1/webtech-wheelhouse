@@ -133,19 +133,13 @@ The app uses your terminal to run on the browser, if you want to stop it just us
 
 ## The JSON API
 
-Besides its pages, Wheelhouse answers a versioned JSON API under `/api/v1`, for programs that are not
-a browser. Reading the price list is public, while reading repairs and creating a service need a token.
-Every route, document and error is described in [docs/api.md](docs/api.md).
+Besides its pages, Wheelhouse answers a versioned JSON API under `/api/v1`, for programs that are not a browser. Reading the price list is public, while reading repairs and creating a service need a token. Every route, document and error is described in [docs/api.md](docs/api.md).
 
-The API runs inside the same application: when `bin/dev` is running, the API is at
-`http://127.0.0.1:3000/api/v1`. **It has to run on port 3000** (the default of `bin/dev`), because
-that is the address the personal page asks.
+The API runs inside the same application: when `bin/dev` is running, the API is at `http://127.0.0.1:3000/api/v1`. **It has to run on port 3000** (the default of `bin dev`), because that is the address the personal page asks.
 
 ### Set the API token
 
-The private routes compare the token of each request with `api_token`, stored in the application's
-encrypted credentials. The author's credentials can only be read with a key that is not in the
-repository, so after cloning you set a token of your own, in credentials for the development environment
+The private routes compare the token of each request with `api_token`, stored in the application's encrypted credentials. The author's credentials can only be read with a key that is not in the repository, so after cloning you set a token of your own, in credentials for the development environment
 
 First you need to generate a random personal token, you can do it with a random generator or by running the next command:
 
@@ -176,8 +170,7 @@ The price list, public:
 curl -i http://127.0.0.1:3000/api/v1/services
 ```
 
-The repairs, with the token. Put your token in a shell variable first, so it is not typed into every
-command:
+The repairs, with the token. Put your token in a shell variable first, so it is not typed into every command:
 
 ```bash
 TOKEN=paste-your-token-here
@@ -194,15 +187,11 @@ curl -i -X POST http://127.0.0.1:3000/api/v1/services \
   -d '{"service": {"name": "Disc Brake Pads", "price": 35}}'
 ```
 
-`-i` prints the status and the headers, `-H` adds a header, `-X POST` changes the verb and `-d` sends
-the body.
+`-i` prints the status and the headers, `-H` adds a header, `-X POST` changes the verb and `-d` sends the body.
 
 ### The personal page that reads the price list
 
-The page lives in another repository,
-[webtech-lab-01](https://github.com/AgustinFlores1/webtech-lab-01), and is published at
-[https://agustinflores1.github.io/webtech-lab-01/](https://agustinflores1.github.io/webtech-lab-01/).
-Its "Wheelhouse Repair Prices" section asks for `http://127.0.0.1:3000/api/v1/services` from the browser.
+The page lives in another repository, [webtech-lab-01](https://github.com/AgustinFlores1/webtech-lab-01), and is published at [https://agustinflores1.github.io/webtech-lab-01/](https://agustinflores1.github.io/webtech-lab-01/). Its "Wheelhouse Repair Prices" section asks for `http://127.0.0.1:3000/api/v1/services` from the browser.
 
 There are to ways to see the connection between the two via the API:
 
