@@ -10,6 +10,7 @@ The projects documentation is located in the `docs/` folder
 * [Domain Model For Database](docs/domain-model.md)
 * [Personal Decisions Made](docs/decisions.md)
 * [Wireframes](docs/wireframes.md)
+* [JSON API](docs/api.md): routes, documents, errors and the decisions behind them
 
 ## Prerequisites
 
@@ -129,3 +130,98 @@ Open your browser and navigate to the url `http://localhost:3000`
 ### Stopping the App
 
 The app uses your terminal to run on the browser, if you want to stop it just use `ctrl+C`.
+
+## The JSON API
+
+Besides its pages, Wheelhouse answers a versioned JSON API under `/api/v1`, for programs that are not
+a browser. Reading the price list is public, while reading repairs and creating a service need a token.
+Every route, document and error is described in [docs/api.md](docs/api.md).
+
+The API runs inside the same application: when `bin/dev` is running, the API is at
+`http://127.0.0.1:3000/api/v1`. **It has to run on port 3000** (the default of `bin/dev`), because
+that is the address the personal page asks.
+
+### Set the API token
+
+The private routes compare the token of each request with `api_token`, stored in the application's
+encrypted credentials. The author's credentials can only be read with a key that is not in the
+repository, so after cloning you set a token of your own, in credentials for the development environment
+
+First you need to generate a random personal token, you can do it with a random generator or by running the next command:
+
+```bash
+   bin/rails secret
+```
+
+After that, you need to add that token to the `development credentials`, which then created its own file in `config/credentials/development.yml.enc` with its own development key.
+
+```bash
+   EDITOR="code --wait" bin/rails credentials:edit --environment development
+   # code opens VSCode for the editing, you can use any editor
+```
+
+Add this line with the token you copied, save and then close the file so rails can encrypt it
+
+```yaml
+   api_token: <paste-your-token-here>
+```
+
+Finally, restart or open the application using the `bin/dev` command on the console.
+
+### Ask the API from the terminal
+
+The price list, public:
+
+```bash
+curl -i http://127.0.0.1:3000/api/v1/services
+```
+
+The repairs, with the token. Put your token in a shell variable first, so it is not typed into every
+command:
+
+```bash
+TOKEN=paste-your-token-here
+curl -i -H "Authorization: Bearer $TOKEN" http://127.0.0.1:3000/api/v1/repairs
+curl -i -H "Authorization: Bearer $TOKEN" "http://127.0.0.1:3000/api/v1/repairs?state=closed"
+```
+
+Create a service, with the token and a JSON body:
+
+```bash
+curl -i -X POST http://127.0.0.1:3000/api/v1/services \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"service": {"name": "Disc Brake Pads", "price": 35}}'
+```
+
+`-i` prints the status and the headers, `-H` adds a header, `-X POST` changes the verb and `-d` sends
+the body.
+
+### The personal page that reads the price list
+
+The page lives in another repository,
+[webtech-lab-01](https://github.com/AgustinFlores1/webtech-lab-01), and is published at
+[https://agustinflores1.github.io/webtech-lab-01/](https://agustinflores1.github.io/webtech-lab-01/).
+Its "Wheelhouse Repair Prices" section asks for `http://127.0.0.1:3000/api/v1/services` from the browser.
+
+There are to ways to see the connection between the two via the API:
+
+#### Published page
+
+start this application with `bin/dev` on port 3000 and open the published page, you should see the prices in its corresponding section.
+
+#### The page served locally
+
+The API only lets two origins read it, the published page from before and `http://127.0.0.1:5500` (see `config/initializers/cors.rb`). To start the page on that other origin, in a second terminal type the following:
+
+```bash
+  git clone https://github.com/AgustinFlores1/webtech-lab-01.git
+  cd webtech-lab-01
+  python3 -m http.server 5500 --bind 127.0.0.1
+```
+
+This will clone the other page onto your system and connect to your browser via a Python server.
+
+Then open `http://127.0.0.1:5500` and you should see the same as with the fisrt method.
+
+Opening `index.html` by double-clicking it does not work because a file opened from the disk has no origin, so the API cannot allow it.
