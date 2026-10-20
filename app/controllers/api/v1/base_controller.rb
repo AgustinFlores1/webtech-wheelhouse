@@ -12,7 +12,7 @@ module Api
       end
 
       rescue_from ActionDispatch::Http::Parameters::ParseError do
-        render_errors("The request body is not valid JSON", :bad_request)
+        render_errors("The body of the request is not valid JSON", :bad_request)
       end
 
       def route_not_found
@@ -27,7 +27,7 @@ module Api
           expected.present? && ActiveSupport::SecurityUtils.secure_compare(token, expected)
         end
 
-        render_errors("Requieres a valid API token", :unauthorized) unless authenticated
+        render_errors("A valid token is required in the Authorization header", :unauthorized) unless authenticated
       end
 
       def render_errors(messages, status)
