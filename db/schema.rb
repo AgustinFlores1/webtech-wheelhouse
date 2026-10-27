@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_27_181412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -125,8 +125,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200000) do
     t.datetime "created_at", null: false
     t.string "email_address", null: false
     t.string "password_digest", null: false
+    t.string "role", default: "mechanic", null: false
+    t.bigint "staff_member_id"
     t.datetime "updated_at", null: false
-    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index "lower((email_address)::text)", name: "index_users_on_lower_email_address", unique: true
+    t.index ["staff_member_id"], name: "index_users_on_staff_member_id", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -138,4 +141,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200000) do
   add_foreign_key "repairs", "customers"
   add_foreign_key "repairs", "staff_members", column: "assigned_mechanic_id"
   add_foreign_key "sessions", "users"
+  add_foreign_key "users", "staff_members"
 end
