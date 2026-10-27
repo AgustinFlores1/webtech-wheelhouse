@@ -1,0 +1,9 @@
+Welcome to Wheelhouse
+
+Your Wheelhouse account <%= @user.email_address %> is ready.
+
+Sign in here:
+<%= new_session_url %>
+
+Your account starts with the role <%= @user.role.humanize %>.
+If you need another role, ask the owner of the workshop.

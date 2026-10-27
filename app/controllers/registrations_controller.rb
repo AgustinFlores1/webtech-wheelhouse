@@ -10,6 +10,7 @@ class RegistrationsController < ApplicationController
     @user = User.new(registration_params)
     if @user.save
       start_new_session_for @user
+      WelcomeMailer.welcome(@user).deliver_later
       redirect_to root_path, notice: "Welcome to Wheelhouse, #{@user.email_address}. Your account has been created."
     else
       render :new, status: :unprocessable_content

@@ -1,0 +1,15 @@
+<h1 style="font-size: 20px; margin: 0 0 16px;">Welcome to Wheelhouse</h1>
+
+<p>
+  Your Wheelhouse account <strong><%= @user.email_address %></strong> is ready.
+</p>
+
+<p>
+  <%= link_to "Sign in to Wheelhouse", new_session_url,
+        style: "display: inline-block; padding: 10px 16px; background-color: #212529; color: #ffc107; text-decoration: none; border-radius: 6px;" %>
+</p>
+
+<p>
+  Your account starts with the role <strong><%= @user.role.humanize %></strong>.
+  If you need another role, ask the owner of the workshop.
+</p>

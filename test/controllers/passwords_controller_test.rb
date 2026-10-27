@@ -60,6 +60,24 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     assert_notice "Passwords did not match"
   end
 
+  test "the link stops working once the password has changed" do
+    token = @user.password_reset_token
+    put password_path(token), params: { password: "a-new-long-password", password_confirmation: "a-new-long-password" }
+
+    get edit_password_path(token)
+    assert_redirected_to new_password_path
+  end
+
+  test "the link stops working after the time the generator sets" do
+    token = @user.password_reset_token
+
+    travel @user.password_reset_token_expires_in + 1.minute do
+      get edit_password_path(token)
+    end
+
+    assert_redirected_to new_password_path
+  end
+
   private
     def assert_notice(text)
       assert_select "div", /#{text}/
