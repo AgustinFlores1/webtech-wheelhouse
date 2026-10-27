@@ -17,4 +17,8 @@ class User < ApplicationRecord
   validates :email_address, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: { case_sensitive: false }
   validates :password, length: { minimum: PASSWORD_MINIMUM_LENGTH }, allow_nil: true
   validates :staff_member_id, uniqueness: true, allow_nil: true
+
+  def display_name
+    staff_member&.name || email_address
+  end
 end
