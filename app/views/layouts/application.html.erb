@@ -24,27 +24,48 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-md bg-primary mb-4" data-bs-theme="light">
-      <div class="container">
-        <%= link_to "WHEELHOUSE BIKES", root_path, class: "navbar-brand" %>
+    <header>
+      <nav class="navbar navbar-expand-xl bg-primary mb-4 navbar-wheelhouse" data-bs-theme="light" aria-label="Main">
+        <div class="container">
+          <%= link_to "WHEELHOUSE BIKES", authenticated? ? root_path : service_catalogs_path, class: "navbar-brand" %>
 
-        <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mainNavbar">
-          <ul class="navbar-nav ms-auto text-center">
-            <li class="nav-item"><%= link_to 'Home', root_path, class: "nav-link #{'active' if current_page?(root_path)}" %></li>
-            <li class="nav-item"><%= link_to 'Services', service_catalogs_path, class: "nav-link #{'active' if current_page?(service_catalogs_path)}" %></li>
-            <li class="nav-item"><%= link_to 'Workshop', workshop_path, class: "nav-link #{'active' if current_page?(workshop_path)}" %></li>
-            <li class="nav-item"><%= link_to 'About', about_path, class: "nav-link #{'active' if current_page?(about_path)}" %></li>
-            <li class="nav-item"><%= link_to 'Customers', customers_path, class: "nav-link #{'active' if current_page?(customers_path)}" %></li>
-            <li class="nav-item"><%= link_to 'Bikes', bikes_path, class: "nav-link #{'active' if current_page?(bikes_path)}" %></li>
-            <li class="nav-item"><%= link_to 'Repairs', repairs_path, class: "nav-link #{'active' if current_page?(repairs_path)}" %></li>
-            <li class="nav-item"><%= link_to 'Staff Members', staff_members_path, class: "nav-link #{'active' if current_page?(staff_members_path)}" %></li>
-          </ul>
+          <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto text-center">
+              <% if authenticated? %>
+                <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %></li>
+                <li class="nav-item"><%= link_to "Services", service_catalogs_path, class: "nav-link #{'active' if current_page?(service_catalogs_path)}" %></li>
+                <li class="nav-item"><%= link_to "Workshop", workshop_path, class: "nav-link #{'active' if current_page?(workshop_path)}" %></li>
+                <li class="nav-item"><%= link_to "About", about_path, class: "nav-link #{'active' if current_page?(about_path)}" %></li>
+                <li class="nav-item"><%= link_to "Customers", customers_path, class: "nav-link #{'active' if current_page?(customers_path)}" %></li>
+                <li class="nav-item"><%= link_to "Bikes", bikes_path, class: "nav-link #{'active' if current_page?(bikes_path)}" %></li>
+                <li class="nav-item"><%= link_to "Repairs", repairs_path, class: "nav-link #{'active' if current_page?(repairs_path)}" %></li>
+                <li class="nav-item"><%= link_to "Staff Members", staff_members_path, class: "nav-link #{'active' if current_page?(staff_members_path)}" %></li>
+              <% else %>
+                <li class="nav-item"><%= link_to "Services", service_catalogs_path, class: "nav-link #{'active' if current_page?(service_catalogs_path)}" %></li>
+              <% end %>
+            </ul>
+
+            <% if authenticated? %>
+              <p class="navbar-text text-center mb-0 ms-xl-3"
+                 title="Signed in as <%= Current.user.display_name %> (<%= Current.user.role.humanize %>)">
+                Signed in as <strong><%= Current.user.display_name %></strong>
+                <span class="badge text-bg-light"><%= Current.user.role.humanize %></span>
+              </p>
+              <%= button_to "Sign out", session_path, method: :delete,
+                    class: "btn btn-dark text-primary btn-sm",
+                    form: { class: "text-center ms-xl-2" } %>
+            <% else %>
+              <%= link_to "Sign in", new_session_path, class: "btn btn-dark text-primary btn-sm ms-xl-3" %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
+
     <main class="container">
       <% flash.each do |type, message| %>
         <div class="alert <%= flash_class(type) %>" role="alert">

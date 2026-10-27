@@ -19,3 +19,43 @@ $body-color: #f8f9fa;
   --bs-table-bg: #7a0f1a;
   --bs-table-color: #f8f9fa;
 }
+
+// Navbar: white links on the yellow bar; below xl, each entry of the toggle menu is a black box
+.navbar.navbar-wheelhouse {
+  --bs-navbar-color: #{$white};
+  --bs-navbar-hover-color: #{$dark};
+  --bs-navbar-active-color: #{$white};
+
+  .nav-link.active {
+    font-weight: $font-weight-bold;
+  }
+
+  @include media-breakpoint-down(xl) {
+    .navbar-nav {
+      --bs-nav-link-color: #{$primary};
+      --bs-nav-link-hover-color: #{$white};
+      --bs-navbar-active-color: #{$white};
+    }
+
+    .nav-link,
+    .navbar-text {
+      display: block;
+      width: 100%;
+      margin: .25rem 0;
+      padding-inline: 1rem;
+      background-color: $dark;
+      color: $primary;
+      border-radius: $border-radius;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn {
+      display: block;
+      width: fit-content;
+      margin: .5rem auto;
+    }
+  }
+}

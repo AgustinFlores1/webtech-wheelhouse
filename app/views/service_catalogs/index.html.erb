@@ -28,6 +28,8 @@
   <% end %>
 </section>
 
-<div class="d-flex justify-content-center mt-2 py-2">
-  <%= link_to "New Service", new_service_catalog_path, class: "btn btn-outline-primary" %>
-</div>
+<% if authenticated? %>
+  <div class="d-flex justify-content-center mt-2 py-2">
+    <%= link_to "New Service", new_service_catalog_path, class: "btn btn-outline-primary" %>
+  </div>
+<% end %>
