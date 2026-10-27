@@ -214,3 +214,14 @@ This will clone the other page onto your system and connect to your browser via 
 Then open `http://127.0.0.1:5500` and you should see the same as with the fisrt method.
 
 Opening `index.html` by double-clicking it does not work because a file opened from the disk has no origin, so the API cannot allow it.
+
+### Emails in development
+
+The application never sends a real email. In development, every email it sends (the password
+reset and the welcome email) is stored on your machine and shown at:
+
+`http://localhost:3000/letter_opener`
+
+The page lists the emails, newest first, with their HTML and text parts. The links inside them
+open the application running locally. The files themselves are in `tmp/letter_opener/`.
+No mail provider, SMTP server or credential is needed.
