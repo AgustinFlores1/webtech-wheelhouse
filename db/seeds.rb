@@ -16,6 +16,8 @@ ActiveStorage::Blob.find_each(&:purge)
 RepairService.delete_all
 ServiceCatalog.delete_all
 Repair.delete_all
+Session.delete_all
+User.delete_all
 StaffMember.delete_all
 Bike.delete_all
 Customer.delete_all
@@ -70,6 +72,26 @@ staff_data = [
   { name: "Alkahul Cawera",   role: "mechanic"}
 ]
 staff = staff_data.map { |attrs| StaffMember.create!(attrs) }
+staff_by_name = staff.index_by(&:name)
+
+accounts_data = [
+  { staff: "Jeremy Falls",     email: "jeremy@wheelhouse.cl",   role: "owner",    password: "owner-jeremy-2026" },
+  { staff: "Samantha Winters", email: "samantha@wheelhouse.cl", role: "counter",  password: "counter-samantha-2026" },
+  { staff: "Carlos Springs",   email: "carlos@wheelhouse.cl",   role: "mechanic", password: "mechanic-carlos-2026" },
+  { staff: "Roberto Autumn",   email: "roberto@wheelhouse.cl",  role: "mechanic", password: "mechanic-roberto-2026" },
+  { staff: "Alkahul Cawera",   email: "alkahul@wheelhouse.cl",  role: "mechanic", password: "mechanic-alkahul-2026" }
+]
+account_by_staff = accounts_data.to_h do |a|
+  user = User.create!(email_address: a[:email], password: a[:password], role: a[:role],
+                      staff_member: staff_by_name.fetch(a[:staff]))
+  [ a[:staff], user ]
+end
+
+# An account that belongs to no member of the staff, with the default role
+User.create!(email_address: "guest@wheelhouse.cl", password: "guest-account-2026")
+
+jeremy_account   = account_by_staff.fetch("Jeremy Falls")
+samantha_account = account_by_staff.fetch("Samantha Winters")
 
 bikes_data = [
   { serial_number: "TRK-8827-A", make_model: "Trek Marlin 5",         colour: "Blue",   owner: "Scott Cawthon" },
@@ -146,6 +168,7 @@ repairs_data = [
 
   # 6. A mechanic is actively working on it right now — the repair with four photos
   { bike: "GNT-5567-E", status: "in_progress",
+    taken_in_by: jeremy_account,
     created_at: 5.days.ago, promised_return_on: 1.day.from_now.to_date,
     estimated_price: 55, assigned_mechanic: roberto,
     photos: [ front, side, rear, detail ],
@@ -167,6 +190,7 @@ repairs_data = [
 
   # 9. OVERDUE - still not handed back
   { bike: "SCT-4482-H", status: "in_progress",
+    taken_in_by: nil,
     created_at: 10.days.ago, promised_return_on: 3.days.ago.to_date,
     estimated_price: 90, assigned_mechanic: roberto,
     photos: [ side, rear ],
@@ -197,6 +221,7 @@ repairs_data = [
 
   # 13. A second, older, closed repair on Jhon Skyrim's bike
   { bike: "GNT-1140-C", status: "closed",
+    taken_in_by: nil,
     created_at: 40.days.ago, promised_return_on: 37.days.ago.to_date,
     estimated_price: 25, assigned_mechanic: roberto, closed_at: 38.days.ago,
     photos: [ side ],
@@ -224,6 +249,7 @@ repairs = repairs_data.map do |r|
     estimated_price: r[:estimated_price],
     promised_return_on: r[:promised_return_on],
     assigned_mechanic_id: r[:assigned_mechanic]&.id,
+    taken_in_by: r.fetch(:taken_in_by, samantha_account),
     created_at: r[:created_at],
     closed_at: r[:closed_at],
     intake_photos: r.fetch(:photos, []),

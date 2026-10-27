@@ -18,7 +18,7 @@ Too be able to run this aplication locally in your own system you will need the 
 
 * [Git 2.3.x](https://git-scm.com/docs/git)
 * [Ruby 4.0.4](https://www.ruby-lang.org/en/documentation/)
-* [Rails 8.0.x](https://rubyonrails.org/docs)
+* [Rails 8.1.x](https://rubyonrails.org/docs)
 * [Node 26.1.x](https://nodejs.org/en)
 * [Yarn 1.22.x](https://yarnpkg.com)
 * [PostgreSQL 16.x](https://www.postgresql.org/docs/current/) — running locally, with a role that can create databases
@@ -107,10 +107,38 @@ The seed creates customers, bikes, staff, services and repairs. Most repairs com
 diagnosis. The photos are in `db/seeds/` and were taken by the author of this repository. Uploaded photos
 are stored in the `storage/` folder, which is not committed.
 
-The seed can be run again at any time with the following command:
+The seed can be run again at any time. It empties every table and creates the same data again, so
+running it twice leaves the same rows. It also deletes every session, so every browser is signed out:
 
 ```bash
 bin/rails db:seed
+```
+
+#### Accounts of the seed
+
+Every page except the price list asks you to sign in. The seed creates one account for each member of
+the staff, joined to that member, and one account that belongs to no one:
+
+| Email address            | Password                | Role     | Member of the staff |
+|--------------------------|-------------------------|----------|---------------------|
+| `jeremy@wheelhouse.cl`   | `owner-jeremy-2026`     | Owner    | Jeremy Falls        |
+| `samantha@wheelhouse.cl` | `counter-samantha-2026` | Counter  | Samantha Winters    |
+| `carlos@wheelhouse.cl`   | `mechanic-carlos-2026`  | Mechanic | Carlos Springs      |
+| `roberto@wheelhouse.cl`  | `mechanic-roberto-2026` | Mechanic | Roberto Autumn      |
+| `alkahul@wheelhouse.cl`  | `mechanic-alkahul-2026` | Mechanic | Alkahul Cawera      |
+| `guest@wheelhouse.cl`    | `guest-account-2026`    | Mechanic | none                |
+
+**These accounts and their passwords exist only in development**, to try the application on your own
+machine. They are written here on purpose and must never be used anywhere else.
+
+A new account can be created from the sign-up page, linked from the sign-in page. It always starts with
+the role Mechanic, the role with the fewest permissions. the reason is in
+[docs/decisions.md](docs/decisions.md). No page changes the role of an account or joins it to a member of
+the staff, that is done from the seed or from the console, for example:
+
+```bash
+bin/rails console
+User.find_by(email_address: "new@wheelhouse.cl").update!(role: :counter)
 ```
 
 ## Running the Aplication Locally
@@ -130,6 +158,19 @@ Open your browser and navigate to the url `http://localhost:3000`
 ### Stopping the App
 
 The app uses your terminal to run on the browser, if you want to stop it just use `ctrl+C`.
+
+### Emails in development
+
+The application never sends a real email. In development, every email it sends (the link to reset a
+forgotten password, and the welcome email of a new account) is stored on your machine and shown at:
+
+`http://localhost:3000/letter_opener`
+
+The page lists the emails, newest first, with their HTML and text parts. Their links open the application
+running locally, so the whole password reset can be followed from there: ask for the link on
+"Forgot your password?", open the email at `/letter_opener`, follow the link, choose a new password and
+sign in with it. The emails are stored as files in `tmp/letter_opener/`. No mail provider, SMTP server or
+credential is needed, and the page exists only in development.
 
 ## The JSON API
 
@@ -214,14 +255,3 @@ This will clone the other page onto your system and connect to your browser via 
 Then open `http://127.0.0.1:5500` and you should see the same as with the fisrt method.
 
 Opening `index.html` by double-clicking it does not work because a file opened from the disk has no origin, so the API cannot allow it.
-
-### Emails in development
-
-The application never sends a real email. In development, every email it sends (the password
-reset and the welcome email) is stored on your machine and shown at:
-
-`http://localhost:3000/letter_opener`
-
-The page lists the emails, newest first, with their HTML and text parts. The links inside them
-open the application running locally. The files themselves are in `tmp/letter_opener/`.
-No mail provider, SMTP server or credential is needed.

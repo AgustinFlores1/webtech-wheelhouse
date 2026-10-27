@@ -11,3 +11,18 @@
 
 4. ¿Does the person that goes in for a repair matter or that the bike has a repair?
     * The assumption was that we store the person that did the repair to associate it with them, then that customer owns that reapir rather than the current owner of the bike
+
+## Accounts (Lab 11)
+
+### Default role: mechanic
+
+Anyone can create an account from the public sign-up page, so the default role is the one
+that does the least damage in the hands of a stranger.
+
+* **owner** manages the whole workshop: staff, prices of the catalogue, every repair.
+* **counter** registers customers with their phone numbers, takes bikes in, sets the
+  estimated price and records the customer's approval: personal data and money.
+* **mechanic** works on the repairs assigned to them: diagnosis and the stages of the repair.
+
+The mechanic touches the fewest records and no customer data or prices, so it is the default.
+The owner promotes an account from the seed or the console.
