@@ -24,6 +24,9 @@
     <p class="fs-5 m-2 "><strong>Brought in by:</strong>
       <%= link_to @repair.customer.name, customer_path(@repair.customer) %>
     </p>
+    <p class="fs-5 m-2 "><strong>Taken in by:</strong>
+      <%= @repair.taken_in_by&.display_name || "Not recorded" %>
+    </p>
    <p class="fs-5 m-2 "><strong>Mechanic:</strong>
       <% if @repair.assigned_mechanic.present? %>
         <%= link_to @repair.assigned_mechanic.name, staff_member_path(@repair.assigned_mechanic) %>

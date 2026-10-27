@@ -3,7 +3,7 @@ class RepairsController < ApplicationController
   before_action :load_form_options, only: %i[new edit create update]
 
   def index
-    @repairs_list = Repair.includes(:bike, :customer, :assigned_mechanic)
+    @repairs_list = Repair.includes(:bike, :customer, :assigned_mechanic, taken_in_by: :staff_member)
                           .with_attached_intake_photos
                           .with_rich_text_diagnosis
                           .list_by_promised_return_on
@@ -20,6 +20,7 @@ class RepairsController < ApplicationController
 
   def create
     @repair = Repair.new(repair_params)
+    @repair.taken_in_by = Current.user
     if @repair.save
       redirect_to @repair, notice: "The repair #{@repair.id} has been successfully created"
     else
@@ -54,7 +55,7 @@ class RepairsController < ApplicationController
   def set_repair
     @repair = Repair.with_attached_intake_photos
                     .with_rich_text_diagnosis
-                    .includes(:bike, :customer, :assigned_mechanic, repair_services: :service_catalog)
+                    .includes(:bike, :customer, :assigned_mechanic, taken_in_by: :staff_member, repair_services: :service_catalog)
                     .find(params[:id])
   end
 

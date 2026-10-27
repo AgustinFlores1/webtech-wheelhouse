@@ -22,6 +22,9 @@
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-md-table-cell">
     <%= repair.assigned_mechanic.nil? ? "Unassigned" : repair.assigned_mechanic.name %>
   </td>
+  <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-xl-table-cell">
+    <%= repair.taken_in_by&.display_name || "Not recorded" %>
+  </td>
   <td class="text-start py-2 pt-2 border-end border-secondary d-none d-lg-table-cell">
     <div class="text-truncate small" style="max-width: 16rem;">
       <%= repair.diagnosis.present? ? truncate(repair.diagnosis.to_plain_text.squish, length: 60) : "No diagnosis yet" %>

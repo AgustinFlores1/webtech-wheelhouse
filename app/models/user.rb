@@ -2,7 +2,10 @@ class User < ApplicationRecord
   PASSWORD_MINIMUM_LENGTH = 10
 
   has_secure_password
+
+  has_many :repairs_taken_in, class_name: "Repair", foreign_key: :taken_in_by_id, inverse_of: :taken_in_by, dependent: :restrict_with_error
   has_many :sessions, dependent: :destroy
+
   belongs_to :staff_member, optional: true
 
   enum :role, {
