@@ -3,10 +3,11 @@ class RepairsController < ApplicationController
   before_action :load_form_options, only: %i[new edit create update]
 
   def index
-    @repairs_list = Repair.includes(:bike, :customer, :assigned_mechanic, taken_in_by: :staff_member)
-                          .with_attached_intake_photos
-                          .with_rich_text_diagnosis
-                          .list_by_promised_return_on
+    @repairs_list = policy_scope(Repair)
+                    .includes(:bike, :customer, :assigned_mechanic, taken_in_by: :staff_member)
+                    .with_attached_intake_photos
+                    .with_rich_text_diagnosis
+                    .list_by_promised_return_on
   end
 
   def show

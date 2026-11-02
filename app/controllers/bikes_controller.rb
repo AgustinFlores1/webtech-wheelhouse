@@ -3,15 +3,17 @@ class BikesController < ApplicationController
   before_action :load_customers, only: %i[new edit create update]
 
   def index
-    @bikes_list = Bike.includes(:customer).list_by_customer
+    @bikes_list = policy_scope(Bike)
+                  .includes(:customer)
+                  .list_by_customer
   end
 
   def show
-    @repairs = @bike.repairs
-                    .includes(:bike, :customer, :assigned_mechanic)
-                    .with_attached_intake_photos
-                    .with_rich_text_diagnosis
-                    .list_by_created_at
+    @repairs = policy_scope(@bike.repairs)
+               .includes(:bike, :customer, :assigned_mechanic)
+               .with_attached_intake_photos
+               .with_rich_text_diagnosis
+               .list_by_created_at
   end
 
   def new

@@ -3,7 +3,8 @@ class ServiceCatalogsController < ApplicationController
   before_action :set_service_catalog, only: %i[show edit update destroy]
 
   def index
-    @service_catalogs_list = ServiceCatalog.list_by_name
+    @service_catalogs_list = policy_scope(ServiceCatalog)
+                             .list_by_name
   end
 
   def show

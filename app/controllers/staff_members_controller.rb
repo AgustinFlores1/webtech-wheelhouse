@@ -2,7 +2,8 @@ class StaffMembersController < ApplicationController
   before_action :set_staff_member, only: %i[show edit update destroy]
 
   def index
-    @staff_members_list = StaffMember.list_by_role
+    @staff_members_list = policy_scope(StaffMember)
+                          .list_by_role
   end
 
   def show
