@@ -35,6 +35,13 @@ class RepairPolicy < ApplicationPolicy
     end
   end
 
+  def remove_intake_photo?
+    return true if user.owner?
+    return false if record.closed?
+
+    user.counter?
+  end
+
   private
 
   def assigned_to_user?

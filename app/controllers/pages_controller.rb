@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  skip_after_action :verify_authorized
   def home
     @message = "We offer a wide range of bicycles, accessories,
     and repair services to keep you riding smoothly.Whether you're a

@@ -3,6 +3,7 @@ class BikesController < ApplicationController
   before_action :load_customers, only: %i[new edit create update]
 
   def index
+    authorize Bike
     @bikes_list = policy_scope(Bike)
                   .includes(:customer)
                   .list_by_customer
@@ -17,14 +18,14 @@ class BikesController < ApplicationController
   end
 
   def new
-    @bike = Bike.new(customer_id: params[:customer_id])
+    @bike = authorize Bike.new(customer_id: params[:customer_id])
   end
 
   def edit
   end
 
   def create
-    @bike = Bike.new(bike_params)
+    @bike = authorize Bike.new(bike_params)
     if @bike.save
       redirect_to @bike, notice: "The bike #{@bike.serial_number} has been successfully created"
     else
@@ -55,7 +56,7 @@ class BikesController < ApplicationController
   end
 
   def set_bike
-    @bike = Bike.includes(:customer).find(params[:id])
+    @bike = authorize Bike.includes(:customer).find(params[:id])
   end
 
   def bike_params

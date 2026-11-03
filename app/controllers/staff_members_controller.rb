@@ -2,6 +2,7 @@ class StaffMembersController < ApplicationController
   before_action :set_staff_member, only: %i[show edit update destroy]
 
   def index
+    authorize StaffMember
     @staff_members_list = policy_scope(StaffMember)
                           .list_by_role
   end
@@ -10,14 +11,14 @@ class StaffMembersController < ApplicationController
   end
 
   def new
-    @staff_member = StaffMember.new
+    @staff_member = authorize StaffMember.new
   end
 
   def edit
   end
 
   def create
-    @staff_member = StaffMember.new(staff_member_params)
+    @staff_member = authorize StaffMember.new(staff_member_params)
     if @staff_member.save
       redirect_to @staff_member, notice: "The staff member \"#{@staff_member.name} - #{@staff_member.role}\" has been successfully created"
     else
@@ -44,7 +45,7 @@ class StaffMembersController < ApplicationController
   private
 
   def set_staff_member
-    @staff_member = StaffMember.find(params[:id])
+    @staff_member = authorize StaffMember.find(params[:id])
   end
 
   def staff_member_params

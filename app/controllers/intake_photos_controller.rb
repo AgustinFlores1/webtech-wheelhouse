@@ -12,7 +12,7 @@ class IntakePhotosController < ApplicationController
   private
 
   def set_repair
-    @repair = Repair.find(params[:repair_id])
+    @repair = authorize policy_scope(Repair).find(params[:repair_id]), :remove_intake_photo?
   end
 
   def set_intake_photo

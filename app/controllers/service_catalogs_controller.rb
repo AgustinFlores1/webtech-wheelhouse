@@ -3,6 +3,7 @@ class ServiceCatalogsController < ApplicationController
   before_action :set_service_catalog, only: %i[show edit update destroy]
 
   def index
+    authorize ServiceCatalog
     @service_catalogs_list = policy_scope(ServiceCatalog)
                              .list_by_name
   end
@@ -11,14 +12,14 @@ class ServiceCatalogsController < ApplicationController
   end
 
   def new
-    @service_catalog = ServiceCatalog.new
+    @service_catalog = authorize ServiceCatalog.new
   end
 
   def edit
   end
 
   def create
-    @service_catalog = ServiceCatalog.new(service_catalog_params)
+    @service_catalog = authorize ServiceCatalog.new(service_catalog_params)
     if @service_catalog.save
       redirect_to @service_catalog, notice: "The service \"#{@service_catalog.name}\" has been successfully created"
     else
@@ -45,7 +46,7 @@ class ServiceCatalogsController < ApplicationController
   private
 
   def set_service_catalog
-    @service_catalog = ServiceCatalog.find(params[:id])
+    @service_catalog = authorize ServiceCatalog.find(params[:id])
   end
 
   def service_catalog_params

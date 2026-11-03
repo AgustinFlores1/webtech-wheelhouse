@@ -26,3 +26,25 @@ that does the least damage in the hands of a stranger.
 
 The mechanic touches the fewest records and no customer data or prices, so it is the default.
 The owner promotes an account from the seed or the console.
+
+## Accounts (Lab 12)
+
+### Actions that do not ask a policy
+
+Every action of every controller calls Pundit (`authorize`, and `policy_scope` on every index),
+and `ApplicationController` verifies it after each action. These are the exceptions, skipped
+with `skip_after_action :verify_authorized`:
+
+| Controller | Actions | Why no policy |
+| --- | --- | --- |
+| `SessionsController` | `new`, `create`, `destroy` | Signing in happens before there is an account to ask about; signing out only ends your own session. |
+| `RegistrationsController` | `new`, `create` | Signing up happens before there is an account. The role is never taken from the form. |
+| `PasswordsController` | `new`, `create`, `edit`, `update` | A person who forgot their password has no session. The token in the link identifies the account. |
+| `PagesController` | `home`, `workshop`, `about` | Open to every signed-in account; they show fixed information and no record, so there is no rule to ask. |
+
+### Another mechanic's repair answers 404
+
+A repair is looked up inside the policy scope (`policy_scope(Repair).find`). A mechanic who
+changes the id in the URL gets 404, the same as for an id that does not exist, so they cannot
+learn that the repair exists. A repair they can see but may not change (a handed-back one)
+answers 403.

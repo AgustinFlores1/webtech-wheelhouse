@@ -2,6 +2,7 @@ class CustomersController < ApplicationController
   before_action :set_customer, only: %i[show edit update destroy]
 
   def index
+    authorize Customer
     @customers_list = policy_scope(Customer)
                       .list_by_name
   end
@@ -10,14 +11,14 @@ class CustomersController < ApplicationController
   end
 
   def new
-    @customer = Customer.new
+    @customer = authorize Customer.new
   end
 
   def edit
   end
 
   def create
-    @customer = Customer.new(customer_params)
+    @customer = authorize Customer.new(customer_params)
     if @customer.save
       redirect_to @customer, notice: "The customer #{@customer.name} has been succesfully created"
     else
@@ -44,7 +45,7 @@ class CustomersController < ApplicationController
   private
 
   def set_customer
-    @customer = Customer.find(params[:id])
+    @customer = authorize Customer.find(params[:id])
   end
 
   def customer_params
