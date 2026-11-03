@@ -4,14 +4,20 @@
     <h1 class="mb-3 border-bottom border-primary pb-3"><%= @bike.serial_number %></h1>
     <p class="fs-5 m-2 "><strong>Make/Model:</strong> <%= @bike.make_model %></p>
     <p class="fs-5 m-2"><strong>Colour:</strong> <%= @bike.colour %></p>
-    <p class="fs-5 m-2"><strong>Owner: </strong><%= link_to @bike.customer.name, customer_path(@bike.customer) %></p>
+    <p class="fs-5 m-2"><strong>Owner: </strong><%= link_to_if policy(@bike.customer).show?, @bike.customer.name, customer_path(@bike.customer) %></p>
 </section>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <%= link_to "Edit", edit_bike_path(@bike), class: "btn btn-outline-secondary" %>
-  <%= button_to "Delete", bike_path(@bike), method: :delete,
+  <% if policy(@bike).edit? %>
+    <%= link_to "Edit", edit_bike_path(@bike), class: "btn btn-outline-secondary" %>
+  <% end %>
+
+  <% if policy(@bike).destroy? %>
+    <%= button_to "Delete", bike_path(@bike),
+        method: :delete,
         class: "btn btn-outline-danger",
         form: { data: { turbo_confirm: "Are you sure you want to delete the bike \"#{@bike.serial_number}\"?" } } %>
+  <% end %>
 </div>
 
 <h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white">Repair History</h2>
@@ -43,8 +49,10 @@
   <p>This bike has not been worked on here</p>
 <% end %>
 
-<div class="d-flex justify-content-center mt-2 py-2">
-  <%= link_to "New Repair", new_repair_path(bike_id: @bike.id), class: "btn btn-outline-primary" %>
-</div>
+<% if policy(Repair).new? %>
+  <div class="d-flex justify-content-center mt-2 py-2">
+    <%= link_to "New Repair", new_repair_path(bike_id: @bike.id), class: "btn btn-outline-primary" %>
+  </div>
+<% end %>
 
 <%= link_to "Back to Bikes", bikes_path, class: "btn btn-primary" %>

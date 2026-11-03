@@ -11,13 +11,13 @@
     <% end %>
   </td>
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
-    <%= link_to repair.bike.serial_number, bike_path(repair.bike) %>
+    <%= link_to_if policy(repair.bike).show?, repair.bike.serial_number, bike_path(repair.bike) %>
     <div class="d-lg-none small fw-normal text-truncate" style="max-width: 10rem;">
       <%= repair.diagnosis.present? ? truncate(repair.diagnosis.to_plain_text.squish, length: 60) : "No diagnosis yet" %>
     </div>
   </td>
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary">
-    <%= link_to repair.customer.name, customer_path(repair.customer) %>
+    <%= link_to_if policy(repair.customer).show?, repair.customer.name, customer_path(repair.customer) %>
   </td>
   <td class="text-start py-2 fw-bold pt-2 border-end border-secondary d-none d-md-table-cell">
     <%= repair.assigned_mechanic.nil? ? "Unassigned" : repair.assigned_mechanic.name %>

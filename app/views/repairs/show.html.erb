@@ -19,17 +19,17 @@
     </p>
 
     <p class="fs-5 m-2 "><strong>Bike:</strong>
-      <%= link_to @repair.bike.serial_number, bike_path(@repair.bike) %>
+      <%= link_to_if policy(@repair.bike).show?, @repair.bike.serial_number, bike_path(@repair.bike) %>
     </p>
     <p class="fs-5 m-2 "><strong>Brought in by:</strong>
-      <%= link_to @repair.customer.name, customer_path(@repair.customer) %>
+      <%= link_to_if policy(@repair.customer).show?, @repair.customer.name, customer_path(@repair.customer) %>
     </p>
     <p class="fs-5 m-2 "><strong>Taken in by:</strong>
       <%= @repair.taken_in_by&.display_name || "Not recorded" %>
     </p>
    <p class="fs-5 m-2 "><strong>Mechanic:</strong>
       <% if @repair.assigned_mechanic.present? %>
-        <%= link_to @repair.assigned_mechanic.name, staff_member_path(@repair.assigned_mechanic) %>
+        <%= link_to_if policy(@repair.assigned_mechanic).show?, @repair.assigned_mechanic.name, staff_member_path(@repair.assigned_mechanic) %>
       <% else %>
         Unassigned
       <% end %>
@@ -37,10 +37,14 @@
 </section>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <%= link_to "Edit", edit_repair_path(@repair), class: "btn btn-outline-secondary" %>
-  <%= button_to "Delete", repair_path(@repair), method: :delete,
-        class: "btn btn-outline-danger",
-        form: { data: { turbo_confirm: "Are you sure you want to delete the repair \"#{@repair.id}\"?" } } %>
+  <% if policy(@repair).edit? %>
+    <%= link_to "Edit", edit_repair_path(@repair), class: "btn btn-outline-secondary" %>
+  <% end %>
+  <% if policy(@repair).destroy? %>
+    <%= button_to "Delete", repair_path(@repair), method: :delete,
+          class: "btn btn-outline-danger",
+          form: { data: { turbo_confirm: "Are you sure you want to delete the repair \"#{@repair.id}\"?" } } %>
+  <% end %>
 </div>
 
 <h2 class="mb-3 border-bottom border-primary pb-3 fw-bold text-white">Intake Photos</h2>
@@ -53,9 +57,11 @@
                 alt: "Intake photo #{index + 1} of repair ##{@repair.id}, bike #{@repair.bike.serial_number} (#{@repair.bike.make_model})",
                 class: "img-fluid rounded border" %>
         <% end %>
-        <%= button_to "Remove", repair_intake_photo_path(@repair, photo), method: :delete,
-              class: "btn btn-sm btn-outline-danger mt-1 w-100",
-              form: { data: { turbo_confirm: "Remove photo #{photo.filename} from repair ##{@repair.id}?" } } %>
+        <% if policy(@repair).remove_intake_photo? %>
+          <%= button_to "Remove", repair_intake_photo_path(@repair, photo), method: :delete,
+                class: "btn btn-sm btn-outline-danger mt-1 w-100",
+                form: { data: { turbo_confirm: "Remove photo #{photo.filename} from repair ##{@repair.id}?" } } %>
+        <% end %>
       </div>
     <% end %>
   </div>
