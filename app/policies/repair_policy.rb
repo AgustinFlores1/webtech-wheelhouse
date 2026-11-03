@@ -1,5 +1,12 @@
 # app/policies/repair_policy.rb
 class RepairPolicy < ApplicationPolicy
+  MECHANIC_ATTRIBUTES = [ :status, :diagnosis, { intake_photos: [] } ].freeze
+  DESK_ATTRIBUTES = [
+  :bike_id, :customer_id, :assigned_mechanic_id, :reported_issue,
+  :promised_return_on, :estimated_price, :closed_at,
+  { repair_services_attributes: [ [ :id, :service_catalog_id, :agreed_price, :_destroy ] ] }
+  ].freeze
+
   def index?
     true
   end
@@ -21,6 +28,16 @@ class RepairPolicy < ApplicationPolicy
 
   def destroy?
     user.owner?
+  end
+
+  def permitted_attributes
+    if user.owner? || user.counter?
+      MECHANIC_ATTRIBUTES + DESK_ATTRIBUTES
+    elsif user.mechanic?
+      MECHANIC_ATTRIBUTES
+    else
+      []
+    end
   end
 
   class Scope < ApplicationPolicy::Scope

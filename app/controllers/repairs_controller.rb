@@ -76,13 +76,6 @@ class RepairsController < ApplicationController
   end
 
   def repair_params
-    params.expect(
-      repair: [
-        :bike_id, :customer_id, :assigned_mechanic_id, :status,
-        :reported_issue, :promised_return_on, :estimated_price, :closed_at, :diagnosis,
-        { intake_photos: [] },
-        { repair_services_attributes: [ [ :id, :service_catalog_id, :agreed_price, :_destroy ] ] }
-      ]
-    )
+    params.expect(repair: policy(@repair || Repair).permitted_attributes)
   end
 end

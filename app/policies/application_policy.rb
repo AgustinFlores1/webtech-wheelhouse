@@ -36,6 +36,16 @@ class ApplicationPolicy
     false
   end
 
+  def permitted_attributes
+    []
+  end
+
+  def permitted_field?(name)
+    permitted_attributes.any? do |attribute|
+      attribute == name || (attribute.is_a?(Hash) && attribute.key?(name))
+    end
+  end
+
   class Scope
     def initialize(user, scope)
       @user = user
