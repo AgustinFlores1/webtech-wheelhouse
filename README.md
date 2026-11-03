@@ -117,22 +117,23 @@ bin/rails db:seed
 #### Accounts of the seed
 
 Every page except the price list asks you to sign in. The seed creates one account for each member of
-the staff, joined to that member, and one account that belongs to no one:
+the staff, joined to that member, and one account that belongs to no one. What each role may do,
+action by action, is in [docs/permissions.md](docs/permissions.md).
 
-| Email address            | Password                | Role     | Member of the staff |
-|--------------------------|-------------------------|----------|---------------------|
-| `jeremy@wheelhouse.cl`   | `owner-jeremy-2026`     | Owner    | Jeremy Falls        |
-| `samantha@wheelhouse.cl` | `counter-samantha-2026` | Counter  | Samantha Winters    |
-| `carlos@wheelhouse.cl`   | `mechanic-carlos-2026`  | Mechanic | Carlos Springs      |
-| `roberto@wheelhouse.cl`  | `mechanic-roberto-2026` | Mechanic | Roberto Autumn      |
-| `alkahul@wheelhouse.cl`  | `mechanic-alkahul-2026` | Mechanic | Alkahul Cawera      |
-| `guest@wheelhouse.cl`    | `guest-account-2026`    | Mechanic | none                |
+| Email address            | Password                | Role     | Member of the staff | What it can do |
+|--------------------------|-------------------------|----------|---------------------|----------------|
+| `jeremy@wheelhouse.cl`   | `owner-jeremy-2026`     | Owner    | Jeremy Falls        | Everything: every repair, customers, bikes, staff and the price list. |
+| `samantha@wheelhouse.cl` | `counter-samantha-2026` | Counter  | Samantha Winters    | Takes bikes in, creates and edits customers, bikes and repairs not handed back, reads staff and services, and cannot delete anything. |
+| `carlos@wheelhouse.cl`   | `mechanic-carlos-2026`  | Mechanic | Carlos Springs      | Reads only his own repairs and changes their state, diagnosis and photos while not handed back, and reads staff and services. |
+| `roberto@wheelhouse.cl`  | `mechanic-roberto-2026` | Mechanic | Roberto Autumn      | Same as Carlos, on Roberto's own repairs. |
+| `alkahul@wheelhouse.cl`  | `mechanic-alkahul-2026` | Mechanic | Alkahul Cawera      | Same as Carlos, on Alkahul's own repairs. |
+| `guest@wheelhouse.cl`    | `guest-account-2026`    | Mechanic | none                | Reads staff and services, and cant see any repairs. |
 
 **These accounts and their passwords exist only in development**, to try the application on your own
 machine. They are written here on purpose and must never be used anywhere else.
 
 A new account can be created from the sign-up page, linked from the sign-in page. It always starts with
-the role Mechanic, the role with the fewest permissions. the reason is in
+the role Mechanic, the role with the fewest permissions. The reason is in
 [docs/decisions.md](docs/decisions.md). No page changes the role of an account or joins it to a member of
 the staff, that is done from the seed or from the console, for example:
 
