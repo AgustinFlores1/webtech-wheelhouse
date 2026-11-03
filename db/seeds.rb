@@ -69,7 +69,7 @@ staff_data = [
   { name: "Samantha Winters", role: "counter_clerk" },
   { name: "Carlos Springs",   role: "mechanic" },
   { name: "Roberto Autumn",   role: "mechanic" },
-  { name: "Alkahul Cawera",   role: "mechanic"}
+  { name: "Alkahul Cawera",   role: "mechanic" }
 ]
 staff = staff_data.map { |attrs| StaffMember.create!(attrs) }
 staff_by_name = staff.index_by(&:name)
