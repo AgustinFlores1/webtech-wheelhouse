@@ -231,10 +231,10 @@ repairs_data = [
   { bike: "SPC-2214-D", status: "arrived",
     created_at: Time.current, promised_return_on: 3.days.from_now.to_date },
 
-  # 15. One more approved-but-unassigned
+  # 15. Approved, and Carlos has picked it up but not started
   { bike: "TRK-6650-G", status: "approved",
     created_at: 1.day.ago, promised_return_on: 5.days.from_now.to_date,
-    estimated_price: 42,
+    estimated_price: 42, assigned_mechanic: carlos,
     photos: [ front ],
     diagnosis: "<div><strong>Saddle and bars loose.</strong></div><ul><li>Seat post clamp worn</li><li>Handlebar tape torn</li></ul>" }
 ]
